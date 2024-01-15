@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Integrating Action Knowledge and LLMs for Task Planning and Situation Handling in Open Worlds</title>
+
+    <script>
+        var task_map = {
+            "simple-object-manipulation": "simple_object_manipulation",
+            "visual-goal-reaching": "visual_goal_reaching",
+            "novel-concept-grounding": "novel_concept_grounding",
+            "one-shot-video-imitation": "one_shot_video_imitation",
+            "visual-constraint-satisfaction": "visual_constraint_satisfaction",
+            "visual-reasoning": "visual_reasoning"
+        };
+
+        function updateDemoVideo(category) {
+            // var demo = document.getElementById("single-menu-demos").value;
+            var task = document.getElementById(category + "-menu-tasks").value;
+            var inst = document.getElementById(category + "-menu-instances").value;
+
+            console.log(task_map[category], task, inst)
+
+            var video = document.getElementById(category + "-single-task-video");
+            video.src = "assets/videos/demos/" +
+                task_map[category] +
+                "/" +
+                task +
+                "/" +
+                inst +
+                ".mp4";
+            video.playbackRate = 2.0;
+            video.play();
+        }
+
+    </script>
+
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="./static/css/academicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $(".tabs ul li a").click(function(e) {
+                e.preventDefault();
+
+                // Get the target tab
+                var targetTab = $(this).attr("href");
+
+                // Remove 'is-active' class from all tab-items
+                $(".tabs ul li").removeClass("is-active");
+
+                // Add 'is-active' class to current tab-item
+                $(this).parent().addClass("is-active");
+
+                // Hide all tab content
+                $(".tab-content .tab-pane").removeClass("active");
+
+                // Show the target tab content
+                $(targetTab).addClass("active");
+            });
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title">Integrating Action Knowledge and LLMs for Task Planning and Situation Handling <br> in Open Worlds</h1>
+                        <!-- <h4 class="title is-4 conference-authors"><a target="_blank" href="https://www.springer.com/journal/10514/updates/23925216"> Autonomous Robots 2023 Special Issue on Large Language Models in Robotics</a> -->
+                        </h4>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a target="_blank">Anonymous</a>
+                                <!-- <a target="_blank" href="https://yding25.com/">Yan&#160;Ding</a><sup>1</sup>,
+                                <a target="_blank" href="https://keke-220.github.io/">Xiaohan&#160;Zhang</a><sup>1</sup>,
+                                <a target="_blank" href="https://astrosaeed.github.io/">Saeid&#160;Amiri</a><sup>1</sup>,
+                                <a target="_blank"> Nieqing&#160;Cao</a><sup>1</sup>,
+                                <br>
+                                <a target="_blank"> Hao&#160;Yang</a><sup>2</sup>,
+                                <a target="_blank"> Andy&#160;Kaminski</a><sup>2</sup>,
+                                <a target="_blank">Chad&#160;Esselink</a><sup>2</sup>,
+                                <a target="_blank" href="https://www.cs.binghamton.edu/~szhang/">Shiqi&#160;Zhang</a><sup>1</sup> -->
+                            </span>
+                        </div>
+
+                        <!-- <div class="is-size-5 publication-authors">
+                            <span class="author-block"><sup>1</sup>SUNY Binghamton; </span>
+                            <span class="author-block"><sup>2</sup>Ford Motor Company</span>
+                        </div> -->
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <!-- TODO PDF Link. -->
+<!--
+                                <span class="link-block">
+                                   <a target="_blank" href="https://www.youtube.com/watch?v=pHSxx9AqwC4" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fas fa-video"></i>
+                                        </span>
+                                        <span>Video</span>
+                                    </a>
+                                </span>
+-->
+
+                                <!-- <span class="link-block">
+                                    <a target="_blank" href="https://arxiv.org/abs/2305.17590" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="ai ai-arxiv"></i>
+                                        </span>
+                                        <span>ArXiv</span>
+                                    </a>
+                                </span> -->
+
+                                <!-- Code Link. -->
+                                <span class="link-block">
+                                    <a target="_blank" href="https://colab.research.google.com/drive/1NLo7W2TpfZEpZ3GG3uxbl1q9ul1bBDrA?usp=sharing" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fab fa-github"></i>
+                                        </span>
+                                        <span>Code</span>
+                                    </a>
+
+                                    <a target="_blank" href="./assets/datasets/COWP_dataset_12tasks_Final.xlsx" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fas fa-database"></i>
+                                        </span>
+                                        <span>Dataset</span>
+                                    </a>
+                                    <a target="_blank" href="./assets/datasets/COWP_questionnaire.pdf" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </span>
+                                        <span>Questionnaire</span>
+                                    </a>
+                                    <a target="_blank" href="./assets/datasets/human_study_instruction.pdf" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </span>
+                                        <span>Instruction</span>
+                                    </a>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero is-light is-small">
+        <div class="hero-body">
+            <div class="container">
+                <div class="item item-sweep_without_exceeding" style="display: flex; justify-content: center; align-items: center;">
+                    <video poster="" id="sweep_without_exceeding" autoplay controls muted loop style="width:70%;" playbackRate=2.0>
+                        <source src="videos/demos/COWP_demo_anonymous.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <!-- Abstract. -->
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <h2 class="title is-3">Abstract</h2>
+                    <div class="content has-text-justified">
+                        <p style="font-size: 110%">
+                            Task planning systems have been developed to help robots use human knowledge (about actions) to
+                            complete long-horizon tasks. Most of them have been developed for “closed worlds” while assuming
+                            the robot is provided with complete world knowledge. However, the real world is generally open,
+                            and the robots frequently encounter unforeseen situations that can potentially break the planner’s
+                            completeness. Could we leverage the recent advances on pre-trained Large Language Models (LLMs)
+                            to enable classical planning systems to deal with novel situations?
+
+                            <br>
+                            <br>
+
+                            This paper introduces a novel framework, called COWP, for open-world task planning and situation
+                            handling. COWP dynamically augments the robot’s action knowledge, including the preconditions
+                            and effects of actions, with task-oriented commonsense knowledge. COWP embraces the openness
+                            from LLMs, and is grounded to specific domains via action knowledge. For systematic evaluations,
+                            we collected a dataset that includes 1,085 execution-time situations. Each situation corresponds to a
+                            state instance wherein a robot is potentially unable to complete a task using a solution that normally
+                            works. Experimental results show that our approach outperforms competitive baselines from the
+                            literature in the success rate of service tasks. Additionally, we have demonstrated COWP using a
+                            mobile manipulator.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Framework-->
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="rows">
+                <div class="rows is-centered ">
+                    <div class="row is-full-width">
+                        <h2 class="title is-3"><span class="dvima">Framework of COWP</span></h2>
+                        <img src="./assets/images/Fig2.jpg" alt="Your image description" style="display: block; margin-left: auto; margin-right: auto; width: 80%;">
+                        <br>
+                        <span style="font-size: 110%">
+                            An overview of COWP that includes the three key components of <span style="font-weight: bold">Task Planner</span> (provided as prior knowledge under closed-world assumption), <span style="font-weight: bold">Knowledge Acquirer</span>, and <span style="font-weight: bold">Plan Monitor</span>.
+                        </span>
+                        <br>
+                        <span style="font-size: 110%">
+                            <sup>&#8270;</sup> The green (dashed) loop represents a plan execution process where the robot does encounter no situation, or these situations have no impact on the robot's plan execution.
+                        </span>
+                        <br>
+                        <span style="font-size: 110%">
+                            <sup>&#8270;</sup> The orange loop is activated when the robot's current (closed-world) task planner is unable to develop a plan, which activates Knowledge Acquirer to augment the task planner with additional action effects utilizing common sense.
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!--Classical Task Planner-->
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="rows">
+                <div class="rows is-centered ">
+                    <div class="row is-full-width">
+                        <h2 class="title is-3"><span class="dvima">Closed-World Task Planner in PDDL</span></h2>
+                        <span style="font-size: 110%">
+                            For each task in the evaluation, we developed a closed-world task planner in PDDL. PDDL, an action-centered language, is designed to formalize Artificial Intelligence (AI) planning problems, allowing for a more direct comparison of planning algorithms and implementations. Below, you will find examples of task planners for a selection of tasks, including 'serving water', 'cleaning the floor', and 'setting the table'.
+                            <br>
+                            <sup>&#8270;</sup> Please note that the comprehensive versions of these task planners are available in our GitHub repository.
+                            <br>
+                            <br>
+                            If you want to get a task plan, you can input the PDDL code into an online solver via <a href="http://editor.planning.domains/">http://editor.planning.domains/.</a>
+                            <br>
+                        </span>
+
+                        <!-- Inserted Tabs Start -->
+                        <div class="tabs">
+                            <ul>
+                                <li class="is-active"><a href="#pddl1">PDDL Code for "Serve Water"</a></li>
+                                <li><a href="#pddl2">PDDL Code for "Clean Floor"</a></li>
+                                <li><a href="#pddl3">PDDL Code for "Set Table"</a></li>
+                                <li><a href="#pddl4">PDDL Code for "Wash Plate"</a></li>
+                                <li><a href="#pddl5">PDDL Code for "Serve Soda"</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="pddl1">
+                                <pre><code>
+(define
+	(domain dining)
+	(:requirements :strips :typing)
+	(:types robot cup table faucet location food utensil beverage furniture other appliance)
+	(:predicates (robot_at ?r - robot ?l - location) (cup_at ?c - cup ?l - location) (faucet_at ?f - faucet ?l - location) (table_at ?t - table ?l - location) (faucet_is_found ?f - faucet) (faucet_is_on ?f - faucet) (faucet_is_off ?f - faucet) (cup_is_found ?c - cup) (cup_is_empty ?c - cup) (cup_is_held ?c - cup) (cup_is_filled ?c - cup) (cup_is_placed ?c - cup) (appliance_at ?a - appliance ?l - location))
+
+	(:action walk
+		:parameters (?r - robot ?l1 - location ?l2 - location)
+		:precondition (and (robot_at ?r ?l1))
+		:effect (and (robot_at ?r ?l2) (not (robot_at ?r ?l1)))
+	)
+
+	(:action find_faucet
+		:parameters (?r - robot ?f - faucet ?l - location)
+		:precondition (and (faucet_at ?f ?l) (robot_at ?r ?l))
+		:effect (and (faucet_is_found ?f))
+	)
+
+	(:action switchon_faucet
+		:parameters (?r - robot ?f - faucet ?l - location)
+		:precondition (and (faucet_is_found ?f) (faucet_is_off ?f) (faucet_at ?f ?l) (robot_at ?r ?l))
+		:effect (and (faucet_is_on ?f) (not (faucet_is_off ?f)))
+	)
+
+	(:action find_cup
+		:parameters (?r - robot ?c - cup ?l - location)
+		:precondition (and (cup_at ?c ?l) (robot_at ?r ?l))
+		:effect (and (cup_is_found ?c))
+	)
+
+	(:action hold_cup
+		:parameters (?r - robot ?c - cup ?l - location)
+		:precondition (and (cup_is_found ?c) (cup_at ?c ?l) (robot_at ?r ?l))
+		:effect (and (cup_is_held ?c))
+	)
+
+	(:action fill_cup
+		:parameters (?r - robot ?c - cup ?f - faucet ?l - location)
+		:precondition (and (cup_is_held ?c) (cup_is_empty ?c) (faucet_is_on ?f) (faucet_at ?f ?l) (robot_at ?r ?l))
+		:effect (and (cup_is_filled ?c))
+	)
+
+	(:action move_cup
+		:parameters (?r - robot ?c - cup ?l1 - location ?l2 - location)
+		:precondition (and (cup_is_held ?c) (robot_at ?r ?l1))
+		:effect (and (cup_at ?c ?l2) (robot_at ?r ?l2) (not (cup_at ?c ?l1)) (not (robot_at ?r ?l1)))
+	)
+
+	(:action place_cup
+		:parameters (?r - robot ?c - cup ?t - table ?l - location)
+		:precondition (and (cup_is_filled ?c) (cup_is_held ?c) (table_at ?t ?l) (robot_at ?r ?l))
+		:effect (and (cup_is_placed ?c) (not (cup_is_held ?c)))
+	)
+
+	(:action switchoff_faucet
+		:parameters (?r - robot ?f - faucet ?l - location)
+		:precondition (and (faucet_is_on ?f) (faucet_at ?f ?l) (robot_at ?r ?l))
+		:effect (and (faucet_is_off ?f) (not (faucet_is_on ?f)))
+	)
+
+	(:action operate
+		:parameters (?r - robot ?a - appliance ?l1 - location ?l2 - location)
+		:precondition (and (appliance_at ?a ?l1) (robot_at ?r ?l1))
+		:effect (and (appliance_at ?a ?l1) (robot_at ?r ?l1))
+	)
+)
+
+(define
+	(problem drink_water)
+	(:domain dining)
+	(:objects rob - robot cup_1 - cup faucet_0 - faucet table_0 - table kitchen - location dining - location)
+	(:init (robot_at rob dining) (cup_at cup_1 kitchen) (faucet_at faucet_0 kitchen) (table_at table_0 dining) (faucet_is_off faucet_0) (cup_is_empty cup_1))
+	(:goal (and (cup_is_placed cup_1) (faucet_is_off faucet_0)))
+)
+
+</code></pre>
+                            </div>
+                            <div class="tab-pane" id="pddl2">
+                                <pre><code>
+(define
+	(domain dining)
+	(:requirements :strips :typing)
+	(:types robot vacuum table outlet location food utensil beverage furniture other appliance)
+	(:predicates (robot_at ?r - robot ?l - location) (vacuum_at ?v - vacuum ?l - location) (table_at ?t - table ?l - location) (table_is_found ?t - table) (outlet_at ?o - outlet ?l - location) (vacuum_is_takenout ?v - vacuum) (vacuum_is_plugged ?v - vacuum) (vacuum_is_unplugged ?v - vacuum) (vacuum_is_on ?v - vacuum) (vacuum_is_off ?v - vacuum) (table_is_clean ?t - table) (appliance_at ?a - appliance ?l - location))
+
+	(:action walk
+		:parameters (?r - robot ?l1 - location ?l2 - location)
+		:precondition (and (robot_at ?r ?l1))
+		:effect (and (robot_at ?r ?l2) (not (robot_at ?r ?l1)))
+	)
+
+    (:action grasp_vacuum
+		:parameters (?r - robot ?v - vacuum ?l - location)
+		:precondition (and (robot_at ?r ?l) (vacuum_at ?v ?l))
+		:effect (and (vacuum_is_takenout ?v))
+	)
+
+	(:action find_table
+		:parameters (?r - robot ?t - table ?l - location)
+		:precondition (and (table_at ?t ?l) (robot_at ?r ?l))
+		:effect (and (table_is_found ?t))
+	)
+
+	(:action plug_vacuum
+		:parameters (?r - robot ?v - vacuum ?o - outlet ?l - location)
+		:precondition (and (vacuum_is_takenout ?v) (outlet_at ?o ?l) (robot_at ?r ?l) (vacuum_is_unplugged ?v))
+		:effect (and (vacuum_is_plugged ?v) (not (vacuum_is_unplugged ?v)))
+	)
+
+	(:action switchon_vacuum
+		:parameters (?r - robot ?v - vacuum ?l - location)
+		:precondition (and (vacuum_is_plugged ?v) (vacuum_is_off ?v))
+		:effect (and (vacuum_is_on ?v) (not (vacuum_is_off ?v)))
+	)
+
+	(:action clean_area
+		:parameters (?r - robot ?v - vacuum ?t - table ?l - location)
+		:precondition (and (vacuum_is_on ?v) (table_is_found ?t) (table_at ?t ?l) (robot_at ?r ?l))
+		:effect (and (table_is_clean ?t))
+	)
+
+	(:action switchoff_vacuum
+		:parameters (?r - robot ?v - vacuum ?l - location)
+		:precondition (and (vacuum_is_on ?v))
+		:effect (and (vacuum_is_off ?v) (not (vacuum_is_on ?v)))
+	)
+
+	(:action unplug_vacuum
+		:parameters (?r - robot ?v - vacuum ?l - location)
+		:precondition (and (vacuum_is_off ?v) (vacuum_is_plugged ?v))
+		:effect (and (vacuum_is_unplugged ?v) (not (vacuum_is_plugged ?v)))
+	)
+
+	(:action operate
+		:parameters (?r - robot ?a - appliance ?l1 - location ?l2 - location)
+		:precondition (and (appliance_at ?a ?l1) (robot_at ?r ?l1))
+		:effect (and (appliance_at ?a ?l1) (robot_at ?r ?l1))
+	)
+)
+
+(define
+	(problem clean_area)
+	(:domain dining)
+	(:objects rob - robot vacuum_1 - vacuum table_0 - table outlet_1 - outlet kitchen - location dining - location)
+	(:init (robot_at rob kitchen) (vacuum_at vacuum_1 dining) (table_at table_0 dining) (outlet_at outlet_1 dining) (vacuum_is_unplugged vacuum_1) (vacuum_is_off vacuum_1))
+	(:goal (and (vacuum_is_unplugged vacuum_1) (table_is_clean table_0)))
+)
+                                </code></pre>
+                            </div>
+                            <div class="tab-pane" id="pddl3">
+                                <pre><code>
+(define
+	(domain dining)
+	(:requirements :strips :typing)
+	(:types robot cupboard table plate fork location food utensil beverage furniture other appliance)
+	(:predicates (robot_at ?r - robot ?l - location) (hand_empty ?r - robot) (cupboard_at ?c - cupboard ?l - location) (cupboard_is_found ?c - cupboard) (cupboard_is_open ?c - cupboard) (cupboard_is_closed ?c - cupboard) (table_at ?t - table ?l - location) (table_is_found ?t - table) (plate_at ?p - plate ?l - location) (plate_is_found ?p - plate) (plate_is_takenout ?p - plate) (plate_is_placed ?p - plate ?t - table) (fork_at ?f - fork ?l - location) (fork_is_found ?f - fork) (fork_is_takenout ?f - fork) (fork_is_placed ?f - fork ?t - table) (appliance_at ?a - appliance ?l))
+
+	(:action walk
+		:parameters (?r - robot ?l1 - location ?l2 - location)
+		:precondition (and (robot_at ?r ?l1))
+		:effect (and (robot_at ?r ?l2) (not (robot_at ?r ?l1)))
+	)
+
+	(:action find_cupboard
+		:parameters (?r - robot ?c - cupboard ?l - location)
+		:precondition (and (cupboard_at ?c ?l) (robot_at ?r ?l))
+		:effect (and (cupboard_is_found ?c))
+	)
+
+	(:action open_cupboard
+		:parameters (?r - robot ?c - cupboard ?l - location)
+		:precondition (and (cupboard_is_closed ?c) (cupboard_at ?c ?l) (cupboard_is_found ?c) (robot_at ?r ?l))
+		:effect (and (cupboard_is_open ?c) (not (cupboard_is_closed ?c)))
+	)
+
+	(:action close_cupboard
+		:parameters (?r - robot ?c - cupboard ?l - location)
+		:precondition (and (cupboard_is_open ?c) (cupboard_at ?c ?l) (cupboard_is_found ?c) (robot_at ?r ?l) (hand_empty ?r))
+		:effect (and (cupboard_is_closed ?c) (not (cupboard_is_open ?c)))
+	)
+
+	(:action find_table
+		:parameters (?r - robot ?t - table ?l - location)
+		:precondition (and (table_at ?t ?l) (robot_at ?r ?l))
+		:effect (and (table_is_found ?t))
+	)
+
+	(:action find_plate
+		:parameters (?r - robot ?p - plate ?c - cupboard ?l - location)
+		:precondition (and (plate_at ?p ?l) (cupboard_is_open ?c) (robot_at ?r ?l) (hand_empty ?r))
+		:effect (and (plate_is_found ?p))
+	)
+
+	(:action takeout_plate
+		:parameters (?r - robot ?p - plate ?c - cupboard ?l - location)
+		:precondition (and (plate_is_found ?p) (plate_at ?p ?l) (cupboard_is_open ?c) (robot_at ?r ?l) (hand_empty ?r))
+		:effect (and (plate_is_takenout ?p) (not (hand_empty ?r)))
+	)
+
+	(:action move_plate
+		:parameters (?r - robot ?p - plate ?l1 - location ?l2 - location)
+		:precondition (and (plate_is_takenout ?p) (plate_at ?p ?l1) (robot_at ?r ?l1))
+		:effect (and (plate_at ?p ?l2) (not (plate_at ?p ?l1)) (robot_at ?r ?l2) (not (robot_at ?r ?l1)))
+	)
+
+	(:action place_plate
+		:parameters (?r - robot ?p - plate ?t - table ?l - location)
+		:precondition (and (table_is_found ?t) (plate_is_takenout ?p) (plate_at ?p ?l) (table_at ?t ?l) (robot_at ?r ?l))
+		:effect (and (plate_is_placed ?p ?t) (not (plate_is_takenout ?p)) (hand_empty ?r))
+	)
+
+	(:action find_fork
+		:parameters (?r - robot ?f - fork ?c - cupboard ?l - location)
+		:precondition (and (fork_at ?f ?l) (cupboard_is_open ?c) (robot_at ?r ?l) (hand_empty ?r))
+		:effect (and (fork_is_found ?f))
+	)
+
+	(:action takeout_fork
+		:parameters (?r - robot ?f - fork ?c - cupboard ?l - location)
+		:precondition (and (fork_is_found ?f) (fork_at ?f ?l) (cupboard_is_open ?c) (robot_at ?r ?l) (hand_empty ?r))
+		:effect (and (fork_is_takenout ?f) (not (hand_empty ?r)))
+	)
+
+	(:action move_fork
+		:parameters (?r - robot ?f - fork ?l1 - location ?l2 - location)
+		:precondition (and (fork_is_takenout ?f) (fork_at ?f ?l1) (robot_at ?r ?l1))
+		:effect (and (fork_at ?f ?l2) (not (fork_at ?f ?l1)) (robot_at ?r ?l2) (not (robot_at ?r ?l1)))
+	)
+
+	(:action place_fork
+		:parameters (?r - robot ?f - fork ?t - table ?l - location)
+		:precondition (and (table_is_found ?t) (fork_is_takenout ?f) (fork_at ?f ?l) (table_at ?t ?l) (robot_at ?r ?l))
+		:effect (and (fork_is_placed ?f ?t) (not (fork_is_takenout ?f)) (hand_empty ?r))
+	)
+
+	(:action operate
+		:parameters (?r - robot ?a - appliance ?l1 - location ?l2 - location)
+		:precondition (and (appliance_at ?a ?l1) (robot_at ?r ?l1))
+		:effect (and (appliance_at ?a ?l1) (robot_at ?r ?l1))
+	)
+)
+
+(define
+	(problem set_table)
+	(:domain dining)
+	(:objects rob - robot cupboard_0 - cupboard plate_1 - plate fork_1 - fork table_0 - table kitchen - location dining - location)
+	(:init (robot_at rob dining) (hand_empty rob) (cupboard_at cupboard_0 kitchen) (cupboard_is_closed cupboard_0) (plate_at plate_1 kitchen) (fork_at fork_1 kitchen) (table_at table_0 dining))
+	(:goal (and (cupboard_is_closed cupboard_0) (plate_is_placed plate_1 table_0) (fork_is_placed fork_1 table_0)))
+)
+                                </code></pre>
+                            </div>
+                            <div class="tab-pane" id="pddl4">
+                                <pre><code>
+(define
+	(domain dining)
+	(:requirements :strips :typing)
+	(:types robot table plate sink location food utensil beverage furniture other appliance)
+	(:predicates (robot_at ?r - robot ?l - location) (table_at ?t - table ?l - location) (plate_at ?p - plate ?l - location) (sink_at ?s - sink ?l - location) (robot_near_table ?r - robot) (robot_near_sink ?r - robot) (table_is_found ?t - table) (plate_is_grasped ?p - plate) (plate_is_placed ?p - plate) (appliance_at ?a - appliance ?l))
+
+	(:action walk
+		:parameters (?r - robot ?l1 - location ?l2 - location)
+		:precondition (and (robot_at ?r ?l1))
+		:effect (and (robot_at ?r ?l2) (not (robot_at ?r ?l1)))
+	)
+
+	(:action find_table
+		:parameters (?r - robot ?t - table ?l - location)
+		:precondition (and (table_at ?t ?l) (robot_at ?r ?l))
+		:effect (and (table_is_found ?t))
+	)
+
+	(:action walk_table
+		:parameters (?r - robot ?t - table ?l - location)
+		:precondition (and (table_at ?t ?l) (table_is_found ?t) (robot_at ?r ?l))
+		:effect (and (robot_near_table ?r))
+	)
+
+	(:action grasp_plate
+		:parameters (?r - robot ?p - plate ?l - location)
+		:precondition (and (robot_near_table ?r) (robot_at ?r ?l) (plate_at ?p ?l))
+		:effect (and (plate_is_grasped ?p) (not (robot_near_table ?r)))
+	)
+
+	(:action walk_sink
+		:parameters (?r - robot ?s - sink ?p - plate ?l - location)
+		:precondition (and (plate_is_grasped ?p) (robot_at ?r ?l) (sink_at ?s ?l))
+		:effect (and (robot_near_sink ?r))
+	)
+
+	(:action place_plate
+		:parameters (?r - robot ?p - plate ?l - location)
+		:precondition (and (robot_near_sink ?r) (plate_is_grasped ?p))
+		:effect (and (plate_is_placed ?p) (not (plate_is_grasped ?p)))
+	)
+
+	(:action operate
+		:parameters (?r - robot ?a - appliance ?l1 - location ?l2 - location)
+		:precondition (and (appliance_at ?a ?l1) (robot_at ?r ?l1))
+		:effect (and (appliance_at ?a ?l1) (robot_at ?r ?l1))
+	)
+)
+(define
+	(problem grasp_plate)
+	(:domain dining)
+	(:objects rob - robot plate_0 - plate sink_1 - sink table_1 - table kitchen - location dining - location)
+	(:init (robot_at rob kitchen) (plate_at plate_0 dining) (sink_at sink_1 kitchen) (table_at table_1 dining))
+	(:goal (and (plate_is_placed plate_0)))
+)
+                        </code></pre>
+                            </div>
+                            <div class="tab-pane" id="pddl5">
+                                <pre><code>
+(define
+	(domain dining)
+	(:requirements :strips :typing)
+	(:types robot coke glass table location food utensil beverage furniture other appliance)
+	(:predicates (robot_at ?r - robot ?l - location) (hand_empty ?r - robot) (coke_at ?c - coke ?l - location) (glass_at ?g - glass ?l - location) (table_at ?t - table ?l - location) (coke_is_found ?c - coke) (coke_is_grasped ?c - coke) (glass_is_found ?g - glass) (glass_is_grasped ?g - glass)  (glass_is_filled ?g - glass) (glass_is_placed ?g - glass) (appliance_at ?a - appliance ?l))
+
+	(:action walk
+		:parameters (?r - robot ?l1 - location ?l2 - location)
+		:precondition (and (robot_at ?r ?l1))
+		:effect (and (robot_at ?r ?l2) (not (robot_at ?r ?l1)))
+	)
+
+    (:action find_glass
+		:parameters (?r - robot ?g - glass ?l - location)
+		:precondition (and (glass_at ?g ?l) (robot_at ?r ?l))
+		:effect (and (glass_is_found ?g))
+	)
+
+	(:action grasp_glass
+		:parameters (?r - robot ?g - glass ?l - location)
+		:precondition (and (glass_is_found ?g) (glass_at ?g ?l) (robot_at ?r ?l) (hand_empty ?r))
+		:effect (and (glass_is_grasped ?g) (not (hand_empty ?r)))
+	)
+
+	(:action move_glass
+		:parameters (?r - robot ?g - glass ?l1 - location ?t - table ?l2 - location)
+		:precondition (and (glass_is_grasped ?g) (glass_at ?g ?l1) (table_at ?t ?l2) (robot_at ?r ?l1))
+		:effect (and (glass_at ?g ?l2) (robot_at ?r ?l2) (not (robot_at ?r ?l1)))
+	)
+
+	(:action place_glass
+		:parameters (?r - robot ?g - glass ?t - table ?l - location)
+		:precondition (and (glass_is_grasped ?g) (glass_at ?g ?l) (table_at ?t ?l) (robot_at ?r ?l))
+		:effect (and (glass_is_placed ?g) (not (glass_is_grasped ?g)) (hand_empty ?r))
+	)
+
+    (:action find_coke
+		:parameters (?r - robot ?c - coke ?l - location)
+		:precondition (and (coke_at ?c ?l) (robot_at ?r ?l))
+		:effect (and (coke_is_found ?c))
+	)
+
+	(:action grasp_coke
+		:parameters (?r - robot ?c - coke ?l - location)
+		:precondition (and (coke_is_found ?c) (coke_at ?c ?l) (robot_at ?r ?l) (hand_empty ?r))
+		:effect (and (coke_is_grasped ?c) (not (hand_empty ?r)))
+	)
+
+	(:action move_coke
+		:parameters (?r - robot ?c - coke ?g - glass ?l1 - location ?l2 - location)
+		:precondition (and (coke_is_grasped ?c) (coke_at ?c ?l1) (glass_is_placed ?g) (glass_at ?g ?l2) (robot_at ?r ?l1))
+		:effect (and (coke_at ?c ?l2) (robot_at ?r ?l2) (not (robot_at ?r ?l1)))
+	)
+
+	(:action pour_coke
+		:parameters (?r - robot ?c - coke ?g - glass ?l - location)
+		:precondition (and (glass_is_placed ?g) (coke_is_grasped ?c) (coke_at ?c ?l) (glass_at ?g ?l) (robot_at ?r ?l))
+		:effect (and (glass_is_filled ?g) (hand_empty ?r))
+	)
+
+	(:action operate
+		:parameters (?r - robot ?a - appliance ?l1 - location ?l2 - location)
+		:precondition (and (appliance_at ?a ?l1) (robot_at ?r ?l1))
+		:effect (and (appliance_at ?a ?l1) (robot_at ?r ?l1))
+	)
+)
+(define
+	(problem drink_coke)
+	(:domain dining)
+	(:objects rob - robot glass_1 - glass coke_1 - coke table_0 - table kitchen - location dining - location)
+	(:init (robot_at rob dining) (hand_empty rob) (glass_at glass_1 kitchen) (coke_at coke_1 kitchen) (table_at table_0 dining))
+	(:goal (and (glass_is_filled glass_1)))
+)
+
+                                </code></pre>
+                            </div>
+
+                            <!-- Inserted Tabs End -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!--Prompt Design-->
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="rows">
+                <div class="rows is-centered ">
+                    <div class="row is-full-width">
+                        <h2 class="title is-3"><span class="dvima">Prompt Design for Plan Monitor and Knowledge Acquirer</span></h2>
+                        <span style="font-size: 110%">
+                            The realization of our plan monitor relies on repeatedly querying GPT-3 for each action using the following prompt.
+                        </span>
+                        <br>
+                        <span style="font-size: 110%">
+                            <span style="font-weight: bold">Prompt 1</span>: Is it suitable for a robot to [Perform-Action], if [Situation]?
+                        </span>
+                        <br>
+                        <br>
+                        <span style="font-size: 110%">
+                            The following template is for querying an LLM for acquiring common sense about action effects.
+                        </span>
+                        <br>
+                        <span style="font-size: 110%">
+                            <span style="font-weight: bold">Prompt 2</span>: Is it suitable for a robot to [Perform-Action-with-Object]?
+                        </span>
+                        <br>
+                        <span style="font-size: 110%">
+                            <span style="font-weight: bold">Prompt 3</span>: There are some objects, such as [Object-1], [Object-2], ..., and [Object-N]. Which is the most suitable for [Current-Task], if [Situation]?
+                        </span>
+                        <br>
+                        <span style="font-size: 110%">
+                            <sup>&#8270;</sup> Please note that these prompts are zero-shot.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!--Situation Dataset-->
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="rows">
+                <div class="rows is-centered ">
+                    <div class="row is-full-width">
+                        <h2 class="title is-3"><span class="dvima">Situation Dataset</span></h2>
+                        <span style="font-size: 110%">
+                            Users can download both the MTurk questionnaire and the situation dataset at the top of the website. The dataset is provided as a CSV file comprising 12 separate sheets, each representing situations for a distinct task. The name of the task corresponds to the sheet name. Each sheet consists of five columns. 
+                            <br>
+                            <br>
+                            The situations’ descriptions provided by the MTurkers are in Column A. Column B details the corresponding steps where the described situation occurs. Column C is the index of distinguishable situations, while Column D provides descriptions of these situations. Finally, Column E indicates the number of distinguishable situations.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Experiments-->
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="rows">
+                <div class="rows is-centered ">
+                    <div class="row is-full-width">
+                        <h2 class="title is-3"><span class="dvima">Experiments</span></h2>
+                        <img src="./assets/images/Fig8.jpeg" alt="Your image description" style="display: block; margin-left: auto; margin-right: auto; width: 70%;">
+                        <span style="font-size: 110%">
+                            The task completion percentage of COWP (ours) and five baseline methods under 12 different tasks. The x-axis represents the task name, and the y-axis represents the task completion percentage. The task completion percentage for each value is an average of 150 trials. The tasks are sorted based on the performance of COWP, where the very left corresponds to its best performance.
+                        </span>
+                    </div>
+                </div>
+
+
+                <!-- Inserted Tabs Start -->
+                <br>
+                <span style="font-size: 110%">
+                    Below shows the prompts and hyperparameters of baselines in the evaluation, where [] is a placeholder.
+                </span>
+                <br>
+                <div class="tabs">
+                    <ul>
+                        <li class="is-active"><a href="#prompt_progprompt">Prompt for ProgPrompt</a></li>
+                        <li><a href="#prompt_innermonologue">Prompt for Inner Monologue</a></li>
+                        <li><a href="#hyperparameters_LMZSP">Hyperparameters used in LMZSP</a></li>
+                    </ul>
+                </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="prompt_progprompt">
+                        <pre><code>
+from actions import walk &lt;obj&gt;, run &lt;obj&gt;, grab &lt;obj&gt;, switchon &lt;obj&gt;, switchoff &lt;obj&gt;, open &lt;obj&gt;, close &lt;obj&gt;, find &lt;obj&gt;, putin &lt;obj&gt; &lt;obj&gt;, fill &lt;obj&gt; &lt;obj&gt;, clean &lt;obj&gt;, wash &lt;obj&gt;
+objects = ['wine', 'bucket', 'dish bowl', 'chips', 'sponge', 'snack', 'kitchencabinet', 'wastecontainer', 'cleaning bottle', 'drinking glass', 'kitchen cabinet', 'dish', 'coffee table', 'blender', 'dining table', 'mug', 'coffee maker', 'dehumidifier', 'air fryer', 'water filter', 'tea', 'dining', 'coffee filter', 'colander', 'orange juice', 'condiment bottle', 'watermelon juice', 'mat', 'closet', 'beer', garbagecan', 'cutlery knife', 'ice cream', 'sauce', 'table_1', 'oven tray', 'refrigerator', 'table cloth', 'steak', 'cupboard', 'wineglass', 'kitchen', 'cutting board', 'noodles', 'kitchen table', 'wooden chopstick', 'frying pan', 'cloth napkin', 'piano bench', 'toaster']
+def put_the_wine_glass_in_the_kitchen_cabinet():
+      # 0: walk to kitchen
+      walk('kitchen')
+      # 1: find wine glass
+      find('wineglass')
+      # 2: grab wine glass
+      assert('close' to 'wineglass')
+      else: find('wineglass')
+      grab('wineglass')
+      # 3: find kitchen cabinet
+      find('kitchencabinet')
+      # 4: open kitchen cabinet
+      assert('close' to 'kitchencabinet' )
+      else: find('kitchencabinet')
+      assert('kitchencabinet' is 'closed' )
+      else: close('kitchencabinet')
+      open('kitchencabinet')
+      # 5: put wine glass in kitchen cabinet
+      assert('wineglass' in 'hands' )
+      else: find('wineglass')
+      else: grab('wineglass')
+      assert('close' to 'kitchencabinet' )
+      else: find('kitchencabinet')
+      assert('kitchencabinet' is 'opened' )
+      else: open('kitchencabinet')
+      putin('wineglass', 'kitchencabinet')
+      # 6: close kitchen cabinet
+      assert('close' to 'kitchencabinet' )
+      else: find('kitchencabinet')
+      assert('kitchencabinet' is 'opened' )
+      else: open('kitchencabinet')
+      close('kitchencabinet')
+      # 7: Done
+
+from actions import walk &lt;obj&gt;, run &lt;obj&gt;, grab &lt;obj&gt;, switchon &lt;obj&gt;, switchoff &lt;obj&gt;, open &lt;obj&gt;, close &lt;obj&gt;, find &lt;obj&gt;, putin &lt;obj&gt; &lt;obj&gt;, fill &lt;obj&gt; &lt;obj&gt;, clean &lt;obj&gt;, wash &lt;obj&gt;
+objects = ['wine', 'bucket', 'dish bowl', 'chips', 'sponge', 'snack', 'kitchencabinet', 'cleaning bottle', 'drinking glass', 'kitchen cabinet', 'dish', 'coffee table', 'blender', 'dining table', 'mug', 'coffee maker', 'dehumidifier', 'air fryer', 'water filter', 'tea', 'dining', 'coffee filter', 'colander', 'orange juice', 'condiment bottle', 'watermelon juice', 'mat', 'closet', 'beer', 'garbagecan_1', 'cutlery knife', 'ice cream', 'sauce', 'table_1', 'oven tray', 'refrigerator', 'table cloth', 'steak', 'cupboard', 'wineglass', 'kitchen', 'cutting board', 'noodles', 'kitchen table', 'wooden chopstick', 'frying pan', 'cloth napkin', 'garbagecan_2', 'piano bench', 'toaster']
+def throw_away_the_lime, where garbagecan_1 is broken():
+      # 0: find lime
+      find('lime')
+      # 1: grab lime
+      assert('close' to 'lime')
+      else: find('lime')
+      grab('lime')
+      # 2: find garbage can
+      find('garbagecan_1')
+      assert('broken' to 'garbagecan_1')
+      else: find('garbagecan_2')
+      # 3: open garbage can
+      assert('close' to 'garbagecan_2' )
+      else: find('garbagecan_2')
+      assert('garbagecan_2' is 'closed' )
+      else: close('garbagecan_2')
+      open('garbagecan_2')
+      # 4: put lime in garbage can
+      assert('lime' in 'hands' )
+      else: find('lime')
+      else: grab('lime')
+      assert('close' to 'garbagecan_2' )
+      else: find('garbagecan_2')
+      assert('garbagecan_2' is 'opened' )
+      else: open('garbagecan_2')
+      putin('lime', 'garbagecan_2')
+      # 5: close garbage can
+      assert('close' to 'garbagecan_2' )
+      else: find('garbagecan_2')
+      assert('garbagecan_2' is 'opened' )
+      else: open('garbagecan_2')
+      close('garbagecan_2)
+      # 6: Done
+
+
+from actions import walk &lt;obj&gt;, run &lt;obj&gt;, grab &lt;obj&gt;, switchon &lt;obj&gt;, switchoff &lt;obj&gt;, open &lt;obj&gt;, close &lt;obj&gt;, find &lt;obj&gt;, putin &lt;obj&gt; &lt;obj&gt;, fill &lt;obj&gt; &lt;obj&gt;, clean &lt;obj&gt;, wash &lt;obj&gt;
+objects = ['wine', 'bucket', 'dish bowl', 'chips', 'sponge', 'snack', 'kitchencabinet', 'wastecontainer', 'cleaning bottle', 'drinking glass', 'kitchen cabinet', 'dish', 'coffee table', 'blender', 'dining table', 'mug', 'coffee maker', 'dehumidifier', 'air fryer', 'water filter', 'tea', 'dining', 'coffee filter', 'colander', 'orange juice', 'condiment bottle', 'watermelon juice', 'mat', 'closet', 'beer', garbagecan', 'cutlery knife', 'ice cream', 'sauce', 'table_1', 'oven tray', 'refrigerator', 'washingsponge', 'table cloth', 'steak', 'cupboard', 'wineglass', 'kitchen', 'cutting board', 'noodles', 'kitchen table', 'wooden chopstick', 'frying pan', 'cloth napkin', 'piano bench', 'toaster', 'dishwashingliquid', 'washingcloth']
+def wash_mug, where washingsponge is missing():
+      # 0: walk to kitchen
+      walk('kitchen')
+      # 1: find sink
+      find('sink')
+      # 2: turn on faucet
+      find('faucet')
+      assert('close' to 'faucet' )
+      else: find('faucet')
+      assert('faucet' is 'switchoff' )
+      else: switchoff('faucet')
+      switchon('faucet')
+      # 3: put mug under water
+      find('mug')
+      assert('close' to 'mug')
+      else: find('mug')
+      grab('mug')
+      find('sink')
+      assert('mug' in 'hands' )
+      else: find('mug')
+      else: grab('mug')
+      assert('close' to 'sink' )
+      else: find('sink')
+      putin('mug', 'sink')
+      # 4: grab dishwashing liquid
+      find('dishwashingliquid')
+      assert('close' to 'dishwashingliquid')
+      else: find('dishwashingliquid')
+      grab('dishwashingliquid')
+      # 5: put dishwashing liquid on mug
+      find('sink')
+      assert('dishwashingliquid' in 'hands' )
+      else: find('dishwashingliquid')
+      else: grab('dishwashingliquid')
+      assert('close' to 'sink' )
+      else: find('sink')
+      putin('dishwashingliquid', 'sink')
+      # 6: grab washingsponge
+      find('washingsponge')
+      assert('missing' to 'washingsponge')
+      else: find('washingcloth')
+      grab('washingcloth')
+      # 7: start scrubbing mug
+      find('sink')
+      assert('washingcloth' in 'hands' )
+      else: find('washingcloth')
+      else: grab('washingcloth')
+      assert('close' to 'sink' )
+      else: find('sink')
+      putin('washingcloth', 'sink')
+      # 8: rinse mug off with water
+      # 9: dry mug with towel
+      # 10: Done
+
+from actions import walk &lt;obj&gt;, run &lt;obj&gt;, grab &lt;obj&gt;, switchon &lt;obj&gt;, switchoff &lt;obj&gt;, open &lt;obj&gt;, close &lt;obj&gt;, find &lt;obj&gt;, putin&lt;obj&gt; &lt;obj&gt;, fill &lt;obj&gt; &lt;obj&gt;, clean &lt;obj&gt;, wash &lt;obj&gt;
+objects = [objects in the environment]
+def [task description], where [situation] ():
+</code></pre>
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane" id="prompt_innermonologue">
+                        <pre><code>
+Here are actions that can be executed by the robot: walk, run, grab, switch on, switch off, open, close, find, put, fill, clean, wash
+
+Human: put the wine glass in the kitchen cabinet
+Scene: ['orchid', 'sink', 'peach', 'mouse', 'oven tray', 'hanger', 'clothes pants', 'cupcake', 'power socket', 'bell pepper', 'slippers', 'toaster', 'closet', 'floor', 'pillow', 'door jamb', 'light switch', 'faucet', 'pie', 'bookshelf', 'cutlery fork', 'condiment shaker', 'bathroom counter', 'keyboard', 'cutlery knife', 'bananas', 'washing machine', 'box', 'ceiling', 'creamy buns', 'bed', 'crackers', 'bathroom', 'stove', 'paper', 'condiment bottle', 'lime', 'stove fan', 'washing sponge', 'deodorant', 'radio', 'kitchen', 'toilet', 'fridge', 'bedroom', 'dishwashing liquid', 'kitchen cabinet', 'remote control', 'folder', 'bar soap', 'bench', 'coffee pot', 'frying pan', 'curtains', 'desk', 'door', 'toothpaste', 'computer', 'painkillers', 'towel rack', 'cereal', 'wall', 'wall picture frame', 'bathtub', 'dish bowl', 'living room', 'cabinet', 'ceiling lamp', 'clothes pile', 'cpu screen', 'plum', 'photo frame', 'stall', 'table lamp', 'rug', 'toothbrush', 'coffee table', 'plate', 'water glass', 'chocolate syrup', 'window', 'bathroom cabinet', 'face cream', 'whipped cream', 'closet drawer', 'kitchen counter', 'tv', 'microwave', 'mug', 'perfume', 'salmon', 'candy bar', 'kitchen table', 'coffee maker', 'wall lamp', 'bread slice', 'towel', 'mouse mat', 'apple', 'cellphone', 'wall shelf', 'book', 'sofa', 'chips', 'wall phone', 'kitchen counter drawer', 'clothes shirt', 'candle', 'hair product', 'wine glass', 'garbage can', 'nightstand', 'clock', 'tv stand', 'chair']
+Robot:
+  0: walk to kitchen
+  1: find wine glass
+  2: grab wine glass
+  3: find kitchen cabinet
+  4: open kitchen cabinet
+  5: put wine glass in kitchen cabinet
+  6: close kitchen cabinet
+  7: Done
+
+Human: throw away the lime
+Scene: ['garbage can_1 is broken', 'orchid', 'sink', 'peach', 'mouse', 'garbage can_1', 'oven tray', 'hanger', 'clothes pants', 'cupcake', 'power socket', 'bell pepper', 'slippers', 'toaster', 'closet', 'floor', 'pillow', 'door jamb', 'light switch', 'faucet', 'pie', 'bookshelf', 'cutlery fork', 'condiment shaker', 'bathroom counter', 'keyboard', 'cutlery knife', 'bananas', 'washing machine', 'box', 'ceiling', 'creamy buns', 'bed', 'crackers', 'bathroom', 'stove', 'paper', 'condiment bottle', 'lime', 'stove fan', 'washing sponge', 'deodorant', 'radio', 'kitchen', 'toilet', 'fridge', 'bedroom', 'dishwashing liquid', 'kitchen cabinet', 'remote control', 'folder', 'bar soap', 'bench', 'coffee pot', 'frying pan', 'curtains', 'desk', 'door', 'toothpaste', 'computer', 'painkillers', 'towel rack', 'cereal', 'wall', 'wall picture frame', 'bathtub', 'dish bowl', 'living room', 'cabinet', 'ceiling lamp', 'clothes pile', 'cpu screen', 'plum', 'photo frame', 'stall', 'table lamp', 'rug', 'toothbrush', 'coffee table', 'plate', 'water glass', 'chocolate syrup', 'window', 'bathroom cabinet', 'face cream', 'whipped cream', 'closet drawer', 'kitchen counter', 'tv', 'microwave', 'mug', 'perfume', 'salmon', 'candy bar', 'kitchen table', 'coffee maker', 'wall lamp', 'bread slice', 'towel', 'mouse mat', 'apple', 'cellphone', 'wall shelf', 'book', 'sofa', 'chips', 'wall phone', 'kitchen counter drawer', 'clothes shirt', 'candle', 'hair product', 'wine glass', 'garbage can_2', 'nightstand', 'clock', 'tv stand', 'chair']
+Robot:
+  0: find lime
+  1: grab lime
+  2: find garbage can_2
+  3: open garbage can_2
+  4: put lime in garbage can_2
+  5: close garbage can_2
+  6: Done
+
+Human: wash mug
+Scene: ['washing sponge is missing', 'orchid', 'sink', 'peach', 'mouse', 'oven tray', 'hanger', 'clothes pants', 'cupcake', 'power socket', 'bell pepper', 'slippers', 'toaster', 'closet', 'floor', 'pillow', 'door jamb', 'light switch', 'faucet', 'pie', 'bookshelf', 'cutlery fork', 'condiment shaker', 'bathroom counter', 'keyboard', 'cutlery knife', 'bananas', 'washing machine', 'box', 'ceiling', 'creamy buns', 'bed', 'crackers', 'bathroom', 'stove', 'paper', 'condiment bottle', 'lime', 'stove fan', 'washing sponge', 'deodorant', 'radio', 'kitchen', 'toilet', 'fridge', 'bedroom', 'dishwashing liquid', 'kitchen cabinet', 'remote control', 'folder', 'bar soap', 'bench', 'coffee pot', 'frying pan', 'curtains', 'desk', 'door', 'toothpaste', 'computer', 'painkillers', 'towel rack', 'cereal', 'wall', 'wall picture frame', 'bathtub', 'dish bowl', 'living room', 'cabinet', 'ceiling lamp', 'clothes pile', 'cpu screen', 'plum', 'photo frame', 'stall', 'table lamp', 'rug', 'toothbrush', 'coffee table', 'plate', 'water glass', 'chocolate syrup', 'window', 'bathroom cabinet', 'face cream', 'whipped cream', 'closet drawer', 'kitchen counter', 'tv', 'microwave', 'mug', 'perfume', 'salmon', 'candy bar', 'kitchen table', 'coffee maker', 'wall lamp', 'bread slice', 'towel', 'mouse mat', 'apple', 'cellphone', 'wall shelf', 'book', 'sofa', 'chips', 'wall phone', 'kitchen counter drawer', 'clothes shirt', 'candle', 'hair product', 'wine glass', 'garbage can', 'nightstand', 'clock', 'tv stand', 'chair']
+Robot:
+  0: walk to kitchen
+  1: find sink
+  2: switch on faucet
+  3: put mug in sink
+  4: grab dishwashing liquid
+  5: put dishwashing liquid in sink
+  6: grab washing cloth
+  7: put washing cloth in sink
+  8: wash mug
+  8: Done
+
+
+Scene: [situation, ojects in the environment]
+Human: [task description]
+Robot:
+</code></pre>
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane" id="hyperparameters_LMZSP">
+                        <pre><code>
+planning_lm_id = 'text-davinci-003'
+translation_lm_id = 'stsb-roberta-large'
+MAX_STEPS = 12  # maximum number of steps to be generated
+CUTOFF_THRESHOLD = 0.5  # early stopping threshold based on matching score and likelihood score
+P = 0.5  # hyperparameter for early stopping heuristic to detect whether Planning LM believes the plan is finished
+BETA = 0.3  # weighting coefficient used to rank generated samples
+sampling_params =
+              {   "max_tokens": 256,
+                  "temperature": 0.9,
+                  "top_p": 0.9,
+                  "n": 10,
+                  "logprobs": 1,
+                  "presence_penalty": 0.5,
+                  "frequency_penalty": 0.3,
+                  "stop": '\n'
+              }
+                        </code></pre>
+                    </div>
+                </div>
+                        
+            </div>
+        </div>
+    </section>
+
+    <!--Conclusion-->
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="rows">
+                <div class="rows is-centered ">
+                    <div class="row is-full-width">
+                        <h2 class="title is-3"><span class="dvima">Conclusion</span></h2>
+
+                        <p style="font-size: 110%">
+                            In this paper, we develop a Large Language Model-based open-world task planning system for robots, called COWP, towards robust task planning and situation handling in open worlds.
+                            The novelty of COWP points to the integration of a classical, knowledge-based task planning system, and a pretrained language model for commonsense knowledge acquisition.
+                            The marriage of the two enables COWP to ground domain-independent commonsense knowledge to specific task planning problems.
+                            To evaluate COWP systematically, we collected a situation dataset that includes 1085 situations in a dining domain.
+                            Experimental results suggest that COWP performed better than existing task planners developed for closed-world and open-world scenarios.
+                            We also provided a demonstration of COWP using a mobile manipulator working on delivery tasks, which provides a reference to COWP practitioners for real-world applications.
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- <section class="section" id="BibTeX">
+        <div class="container is-max-widescreen content">
+            <h2 class="title">BibTeX</h2>
+            <pre><code>@article{ding2023integrating,
+  title={Integrating Action Knowledge and LLMs for Task Planning and Situation Handling in Open Worlds},
+  author={Ding, Yan and Zhang, Xiaohan and Amiri, Saeid and Cao, Nieqing and Yang, Hao and Kaminski, Andy and Esselink, Chad and Zhang, Shiqi},
+  journal={Autonomous Robots},
+  year={2023}}
+</code></pre>
+        </div>
+    </section> -->
+
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column">
+                    <div class="content has-text-centered">
+                        <p>
+                            Website template borrowed from <a herf="https://vimalabs.github.io/"> VIMA, <a href="https://github.com/nerfies/nerfies.github.io">NeRFies</a> and <a href="https://github.com/cliport/cliport.github.io">CLIPort</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
