@@ -36,6 +36,101 @@
         }
 
     </script>
+<!--    <script>-->
+<!--    function showVideos() {-->
+<!--        var category = document.getElementById("videoCategory").value;-->
+<!--        var container = document.getElementById("videosContainer");-->
+<!--        container.innerHTML = ''; // Clear existing videos-->
+<!--        var infoText = "You can view the MoMa-Pos performance under different scenarios."; // The message you want to display-->
+<!--        var infoElement = document.createElement('p');-->
+<!--        infoElement.textContent = infoText;-->
+<!--        infoElement.style.textAlign = 'center'; // Center the text-->
+<!--        infoElement.style.marginTop = '20px'; // Add some space above the text-->
+<!--        container.appendChild(infoElement); // Add the info text to the container-->
+
+<!--        var videos = {-->
+<!--            dinnerTable: [-->
+<!--                { src: "./static/assets/videos/demos/demo_DinnerTable1.mp4", title: "Dinner Table Video 1" },-->
+<!--                { src: "./static/assets/videos/demos/demo_DinnerTable2.mp4", title: "Dinner Table Video 2" }-->
+<!--            ],-->
+<!--            fridge: [-->
+<!--                { src: "./static/assets/videos/demos/demo_Fridge1.mp4", title: "Fridge Video 1" },-->
+<!--                { src: "./static/assets/videos/demos/demo_Fridge2.mp4", title: "Fridge Video 2" }-->
+<!--            ],-->
+<!--            table: [-->
+<!--                { src: "./static/assets/videos/demos/demo_Table1.mp4", title: "Table Video 1" },-->
+<!--                { src: "./static/assets/videos/demos/demo_Table2.mp4", title: "Table Video 2" }-->
+<!--            ],-->
+<!--            drawer: [-->
+<!--                { src: "./static/assets/videos/demos/demo_Drawer1.mp4", title: "Drawer Video 1" },-->
+<!--                { src: "./static/assets/videos/demos/demo_Drawer2.mp4", title: "Drawer Video 2" }-->
+<!--            ]-->
+<!--        };-->
+
+<!--        videos[category].forEach(function(video) {-->
+<!--            var videoElement = document.createElement('video');-->
+<!--            videoElement.src = video.src;-->
+<!--            videoElement.controls = true;-->
+<!--            videoElement.style.width = '100%';-->
+<!--            container.appendChild(videoElement);-->
+
+<!--            var titleElement = document.createElement('p');-->
+<!--            titleElement.textContent = video.title;-->
+<!--            titleElement.style.textAlign = 'center'; // Center the video title-->
+<!--            container.appendChild(titleElement);-->
+<!--        });-->
+<!--    }-->
+
+<!--    // Initial call to show the first category videos-->
+<!--    window.onload = function() {-->
+<!--        showVideos();-->
+<!--    };-->
+<!--    </script>-->
+    <script>
+    function showVideos() {
+        var category = document.getElementById("videoCategory").value;
+        var container = document.getElementById("videosContainer");
+        container.innerHTML = ''; // Clear existing videos
+
+        var videos = {
+            dinnerTable: [
+                { src: "./static/assets/videos/demos/demo_DinnerTable1.mp4", title: "Dinner Table Video 1" },
+                { src: "./static/assets/videos/demos/demo_DinnerTable2.mp4", title: "Dinner Table Video 2" }
+            ],
+            fridge: [
+                { src: "./static/assets/videos/demos/demo_Fridge1.mp4", title: "Fridge Video 1" },
+                { src: "./static/assets/videos/demos/demo_Fridge2.mp4", title: "Fridge Video 2" }
+            ],
+            table: [
+                { src: "./static/assets/videos/demos/demo_Table1.mp4", title: "Table Video 1" },
+                { src: "./static/assets/videos/demos/demo_Table2.mp4", title: "Table Video 2" }
+            ],
+            drawer: [
+                { src: "./static/assets/videos/demos/demo_Drawer1.mp4", title: "Drawer Video 1" },
+                { src: "./static/assets/videos/demos/demo_Drawer2.mp4", title: "Drawer Video 2" }
+            ]
+        };
+
+        videos[category].forEach(function(video) {
+            var videoElement = document.createElement('video');
+            videoElement.src = video.src;
+            videoElement.controls = true;
+            videoElement.style.width = '70%';
+            videoElement.style.display = 'block'; // 确保视频元素被视为块级元素
+            videoElement.style.marginLeft = 'auto'; // 左外边距设置为自动
+            videoElement.style.marginRight = 'auto'; // 右外边距设置为自动
+            container.appendChild(videoElement);
+
+            var titleElement = document.createElement('p');
+            titleElement.textContent = video.title;
+            titleElement.style.textAlign = 'center';
+            container.appendChild(titleElement);
+        });
+    }
+    // Ensure initial videos are shown when the page loads
+    window.onload = showVideos;
+    </script>
+
 
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
     <link rel="stylesheet" href="./static/css/bulma.min.css">
@@ -150,7 +245,7 @@
 
                                 <!-- Code Link. -->
                                 <span class="link-block">
-                                    <a target="_blank" href="https://github.com/yding25/GPT-Planner" class="external-link button is-normal is-rounded is-dark">
+                                    <a target="_blank" href="https://github.com/AutonoBot-Lab/Project_MoMa-Pos" class="external-link button is-normal is-rounded is-dark">
                                         <span class="icon">
                                             <i class="fab fa-github"></i>
                                         </span>
@@ -190,7 +285,7 @@
             <div class="container">
                 <div class="item item-sweep_without_exceeding" style="display: flex; justify-content: center; align-items: center;">
                     <video poster="" id="sweep_without_exceeding" autoplay controls muted loop style="width:70%;" playbackRate=2.0>
-                        <source src="videos/demos/COWP_demo.mp4" type="video/mp4">
+                        <source src="./static/assets/videos/demos/demo1.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
@@ -207,8 +302,7 @@
                     <div class="content has-text-justified">
                         <p style="font-size: 110%">
                             Mobile manipulators always need to determine
-							feasible base positions prior to carrying out navigation-
-							manipulation tasks. Real-world environments are often clut-
+							feasible base positions prior to carrying out navigation-manipulation tasks. Real-world environments are often clut
 							tered with various furniture, obstacles, and dozens of other
 							objects. Efficiently computing base positions poses a challenge.
 							In this work, we introduce a framework named MoMa-Pos to
@@ -219,16 +313,14 @@
                             <br>
                             <br>
 
-                            MoMa-
-							Pos then calculates standing positions by considering furniture
+                            MoMa-Pos then calculates standing positions by considering furniture
 							structures, robot models, and obstacles comprehensively. We
 							have extensively evaluated the proposed MoMa-Pos across
 							different settings (e.g., environment and algorithm parameters)
 							and with various mobile manipulators. Our empirical results
 							show that MoMa-Pos demonstrates remarkable effectiveness
 							and efficiency in its performance, surpassing the methods in
-							the literature. Supplementary material can be found at https:
-							//yding25.com/MoMa-Pos
+							the literature.
                         </p>
                     </div>
                 </div>
@@ -236,103 +328,118 @@
         </div>
     </section>
 
-    <!--Framework-->
+    <hr>
     <section class="section">
         <div class="container is-max-widescreen">
-            <div class="rows">
-                <div class="rows is-centered ">
-                    <div class="row is-full-width">
-                        <h2 class="title is-3"><span class="dvima">Framework of MoMa_Pos</span></h2>
-                        <img src="./static/assets/images/MoMa_PosFramework.png" alt="Your image description" style="display: block; margin-left: auto; margin-right: auto; width: 80%;">
-                        <br>
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <h2 class="title is-3">Framework of MoMa-Pos</h2>
+                    <img src="./static/assets/images/MoMa-Pos Framework3.png" alt="Your image description" style="display: block; margin-left: auto; margin-right: auto; width: 80%;">
+                    <br>
+                    <div class="content has-text-justified">
                         <span style="font-size: 110%">
-                            The MoMa_Pos framework provides an overview that includes three key components: potential point selection and path planning, environment simplification, and robot motion parts.
+                            The MoMa-Pos framework provides an overview that includes three key components: Predicting Object Importance for Modeling, Computing Potential Base Position Area, and Identifying a Feasible Base Position
                         </span>
                         <br>
+
                         <span style="font-size: 110%">
                             <sup>&#8270;</sup> The red area represents the planning of the robot's path using candidate grasp points.
                         </span>
                         <br>
                         <span style="font-size: 110%">
+                            <sup>&#8270;</sup> The green area The green area represents the identification of a feasible base position.
+                        </span>
+                        <br>
+                        <span style="font-size: 110%">
                             <sup>&#8270;</sup> The yellow area represents the simplification of the environment.
                         </span>
-						<br>
-						<span style="font-size: 110%">
-                            <sup>&#8270;</sup> The purple part represents the specific motion of the robot
-                        </span>
-						<br>
-						<span style="font-size: 110%">
-                             These three parts work together to complete the task of determining the position where the robot stands to complete its task.
-                        </span>
+                        <br>
+
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
 
+    <hr>
 
-
-
-    <!--Experiments-->
     <section class="section">
         <div class="container is-max-widescreen">
-            <div class="rows">
-                <div class="rows is-centered ">
-                    <div class="row is-full-width">
-                        <h2 class="title is-3"><span class="dvima">Experiments</span></h2>
-                        <img src="./static/assets/images/Experiment_Table.png" alt="Your image description" style="display: block; margin-left: auto; margin-right: auto; width: 70%;">
-                        <span style="font-size: 110%">
-                            In our experiments, we compared the performance of MoMa_Pos (our method) with three baseline methods across six different specific scenarios, recording the time required to complete tasks and the specific distance traveled. In each specific scenario, results were tested at different positions. Ultimately, the method that required the least amount of time and traveled the shortest distance to complete tasks performed the best.
-                        </span>
-                    </div>
+            <div class="columns is-centered">
+                <div class="column is-full">
+                    <h2 class="title is-3 has-text-centered"><span class="dvima">Experiments</span></h2>
+                    <img src="./static/assets/images/Experiment_Table.png" alt="Your image description" style="display: block; margin-left: auto; margin-right: auto; width: 70%;">
+                    <br>
+                    <span style="font-size: 110%">
+                        In our experiments, we compared the performance of MoMa-Pos (our method) with three baseline methods across six different specific scenarios, recording the time required to complete tasks and the specific distance traveled. In each specific scenario, results were tested at different positions. Ultimately, the method that required the least amount of time and traveled the shortest distance to complete tasks performed the best.
+                    </span>
                 </div>
+            </div>
     </section>
-
-
-
-    <!--Conclusion-->
+    <hr>
+    <!-- Video Demos Section -->
+<!--    <section class="section">-->
+<!--        <div class="container is-max-widescreen">-->
+<!--            <div class="columns is-centered">-->
+<!--                <div class="column is-full">-->
+<!--                    <h2 class="title is-3 has-text-centered">Video Demos</h2>-->
+<!--                    <select id="videoCategory" onchange="showVideos()">-->
+<!--                        <option value="dinnerTable">Dinner Table</option>-->
+<!--                        <option value="fridge">Fridge</option>-->
+<!--                        <option value="table">Table</option>-->
+<!--                        <option value="drawer">Drawer</option>-->
+<!--                    </select>-->
+<!--                    <div id="videosContainer"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered">
+                <div class="column is-full">
+                    <h2 class="title is-3 has-text-centered">Video Demos</h2>
+                    <div class="has-text-centered" style="margin-bottom: 20px;">
+                        <span>You can view the MoMa-Pos performance under </span>
+                        <select id="videoCategory" onchange="showVideos()">
+                            <option value="dinnerTable">Dinner Table</option>
+                            <option value="fridge">Fridge</option>
+                            <option value="table">Table</option>
+                            <option value="drawer">Drawer</option>
+                        </select>
+                        <span> scenarios.</span>
+                    </div>
+                    <div id="videosContainer"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
     <section class="section">
         <div class="container is-max-widescreen">
             <div class="rows">
                 <div class="rows is-centered ">
                     <div class="row is-full-width">
-                        <h2 class="title is-3"><span class="dvima">Conclusion</span></h2>
-
+                        <h2 class="title is-3 has-text-centered"><span class="dvima">Conclusion and Limitations</span></h2>
                         <p style="font-size: 110%">
-								In this work, we demonstrated that MoMa-Pos effectively
-								identifies feasible positions for navigation-manipulation
-								tasks. We conclude by acknowledging the limitations of our
-								study, reflecting on the implications of our findings, and
-								highlighting opportunities for future research. A significant
-								limitation we encountered is the lack of discussion on
-								the performance of MoMa-Pos with inaccurate simulation
-								models. In the real world, encountering inaccurate models is
-								common, despite the remarkable advancements in computer
-								vision and 3D modeling technologies. We have not explored
-								whether MoMa-Pos’s performance, particularly in terms of
-								task execution time, would deteriorate under such conditions.
-								Theoretically, MoMa-Pos should still be able to find feasible
-								positions, as we have demonstrated its completeness. Another
-								constraint of the current framework is the inability of certain
-								critical parameters, such as α, to adapt automatically. Moving
-								forward, we aim to address these limitations to enhance
-								MoMa-Pos’s performance further
-                        </p>
+                            In this work, we demonstrated that MoMa-Pos effectively identifies feasible positions for navigation-manipulation tasks. We conclude by acknowledging the limitations of our study, reflecting on the implications of our findings, and highlighting opportunities for future research. A significant limitation we encountered is the lack of discussion on the performance of MoMa-Pos with inaccurate simulation models. In the real world, encountering inaccurate models is common, despite the remarkable advancements in computer vision and 3D modeling technologies. We have not explored whether MoMa-Pos’s performance, particularly in terms of task execution time, would deteriorate under such conditions. Theoretically, MoMa-Pos should still be able to find feasible positions, as we have demonstrated its completeness. Another constraint of the current framework is the inability of certain critical parameters, such as α, to adapt automatically. Moving forward, we aim to address these limitations to enhance MoMa-Pos’s performance further.
+                        <br>
+                        <br>
 
+                            We have shown that MoMa-Pos effectively identifies viable positions for navigation-manipulation tasks. Acknowledging the limitations of our research, we reflect on our findings' implications and highlight future research opportunities. One notable limitation is the absence of analysis on MoMa-Pos's performance with imprecise simulation models, a common issue despite advances in computer vision and 3D modeling. We have yet to investigate if MoMa-Pos's task execution time is adversely affected under such conditions. However, our results suggest MoMa-Pos can reliably identify feasible positions. Another limitation is the framework's inability to automatically adjust critical parameters, like α. Future efforts will focus on overcoming these challenges to improve MoMa-Pos's efficacy.
+                        </p>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-
+    <hr>
     <section class="section" id="BibTeX">
         <div class="container is-max-widescreen content">
             <h2 class="title">BibTeX</h2>
-            <pre><code>@article{ding2023integrating,
+            <pre><code>@article{shao2024integrating,
   title={MoMa-Pos: Where Should Mobile Manipulators Stand in Cluttered Environment Before Task Execution?},
   author={Shao, Beichen and Ding, Yan and Wang, Xingchen and Xie, Xuefeng and Gu, Fuqiang and Luo, Jun and Chen, Chao},
   journal={},
@@ -348,6 +455,7 @@
                     <div class="content has-text-centered">
                         <p>
                             Website template borrowed from <a herf="https://vimalabs.github.io/"> VIMA, <a href="https://github.com/nerfies/nerfies.github.io">NeRFies</a> and <a href="https://github.com/cliport/cliport.github.io">CLIPort</a>.
+
                         </p>
                     </div>
                 </div>
