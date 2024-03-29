@@ -36,17 +36,12 @@
         }
 
     </script>
+
 <!--    <script>-->
 <!--    function showVideos() {-->
 <!--        var category = document.getElementById("videoCategory").value;-->
 <!--        var container = document.getElementById("videosContainer");-->
 <!--        container.innerHTML = ''; // Clear existing videos-->
-<!--        var infoText = "You can view the MoMa-Pos performance under different scenarios."; // The message you want to display-->
-<!--        var infoElement = document.createElement('p');-->
-<!--        infoElement.textContent = infoText;-->
-<!--        infoElement.style.textAlign = 'center'; // Center the text-->
-<!--        infoElement.style.marginTop = '20px'; // Add some space above the text-->
-<!--        container.appendChild(infoElement); // Add the info text to the container-->
 
 <!--        var videos = {-->
 <!--            dinnerTable: [-->
@@ -71,67 +66,70 @@
 <!--            var videoElement = document.createElement('video');-->
 <!--            videoElement.src = video.src;-->
 <!--            videoElement.controls = true;-->
-<!--            videoElement.style.width = '100%';-->
+<!--            videoElement.style.width = '70%';-->
+<!--            videoElement.style.display = 'block'; // 确保视频元素被视为块级元素-->
+<!--            videoElement.style.marginLeft = 'auto'; // 左外边距设置为自动-->
+<!--            videoElement.style.marginRight = 'auto'; // 右外边距设置为自动-->
 <!--            container.appendChild(videoElement);-->
 
 <!--            var titleElement = document.createElement('p');-->
 <!--            titleElement.textContent = video.title;-->
-<!--            titleElement.style.textAlign = 'center'; // Center the video title-->
+<!--            titleElement.style.textAlign = 'center';-->
 <!--            container.appendChild(titleElement);-->
 <!--        });-->
 <!--    }-->
-
-<!--    // Initial call to show the first category videos-->
-<!--    window.onload = function() {-->
-<!--        showVideos();-->
-<!--    };-->
+<!--    // Ensure initial videos are shown when the page loads-->
+<!--    window.onload = showVideos;-->
 <!--    </script>-->
+
     <script>
-    function showVideos() {
-        var category = document.getElementById("videoCategory").value;
-        var container = document.getElementById("videosContainer");
-        container.innerHTML = ''; // Clear existing videos
+        function showVideos() {
+            var category = document.getElementById("videoCategory").value;
+            var container = document.getElementById("videosContainer");
+            container.innerHTML = ''; // Clear existing videos
 
-        var videos = {
-            dinnerTable: [
-                { src: "./static/assets/videos/demos/demo_DinnerTable1.mp4", title: "Dinner Table Video 1" },
-                { src: "./static/assets/videos/demos/demo_DinnerTable2.mp4", title: "Dinner Table Video 2" }
-            ],
-            fridge: [
-                { src: "./static/assets/videos/demos/demo_Fridge1.mp4", title: "Fridge Video 1" },
-                { src: "./static/assets/videos/demos/demo_Fridge2.mp4", title: "Fridge Video 2" }
-            ],
-            table: [
-                { src: "./static/assets/videos/demos/demo_Table1.mp4", title: "Table Video 1" },
-                { src: "./static/assets/videos/demos/demo_Table2.mp4", title: "Table Video 2" }
-            ],
-            drawer: [
-                { src: "./static/assets/videos/demos/demo_Drawer1.mp4", title: "Drawer Video 1" },
-                { src: "./static/assets/videos/demos/demo_Drawer2.mp4", title: "Drawer Video 2" }
-            ]
+            var videos = {
+                dinnerTable: [
+                    { src: "./static/assets/videos/demos/demo_DinnerTable1.mp4", title: "Dinner Table Video 1" },
+                    { src: "./static/assets/videos/demos/demo_DinnerTable2.mp4", title: "Dinner Table Video 2" }
+                ],
+                fridge: [
+                    { src: "./static/assets/videos/demos/demo_Fridge1.mp4", title: "Fridge Video 1" },
+                    { src: "./static/assets/videos/demos/demo_Fridge2.mp4", title: "Fridge Video 2" }
+                ],
+                table: [
+                    { src: "./static/assets/videos/demos/demo_Table1.mp4", title: "Table Video 1" },
+                    { src: "./static/assets/videos/demos/demo_Table2.mp4", title: "Table Video 2" }
+                ],
+                drawer: [
+                    { src: "./static/assets/videos/demos/demo_Drawer1.mp4", title: "Drawer Video 1" },
+                    { src: "./static/assets/videos/demos/demo_Drawer2.mp4", title: "Drawer Video 2" }
+                ]
+            };
+
+            videos[category].forEach(function(video) {
+                var videoElement = document.createElement('video');
+                videoElement.src = video.src;
+                videoElement.controls = true;
+                videoElement.style.width = '70%';
+                videoElement.style.display = 'block';
+                videoElement.style.margin = 'auto'; // 同时设置左右外边距为自动
+                container.appendChild(videoElement);
+
+                var titleElement = document.createElement('p');
+                titleElement.textContent = video.title;
+                titleElement.style.textAlign = 'center';
+                container.appendChild(titleElement);
+            });
+        }
+
+        // 确保在页面加载时根据<select>的默认值显示视频
+        window.onload = function() {
+            // 如果需要，这里可以设置<select>的默认值
+            // document.getElementById("videoCategory").value = "dinnerTable";
+            showVideos();
         };
-
-        videos[category].forEach(function(video) {
-            var videoElement = document.createElement('video');
-            videoElement.src = video.src;
-            videoElement.controls = true;
-            videoElement.style.width = '70%';
-            videoElement.style.display = 'block'; // 确保视频元素被视为块级元素
-            videoElement.style.marginLeft = 'auto'; // 左外边距设置为自动
-            videoElement.style.marginRight = 'auto'; // 右外边距设置为自动
-            container.appendChild(videoElement);
-
-            var titleElement = document.createElement('p');
-            titleElement.textContent = video.title;
-            titleElement.style.textAlign = 'center';
-            container.appendChild(titleElement);
-        });
-    }
-    // Ensure initial videos are shown when the page loads
-    window.onload = showVideos;
     </script>
-
-
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
     <link rel="stylesheet" href="./static/css/bulma.min.css">
     <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
@@ -200,15 +198,15 @@
                         </h4>
                         <div class="is-size-5 publication-authors">
                             <span class="author-block">
-                                <a target="_blank" href="https://github.com/ssspeg">Beichen&#160;Shao</a><sup>1</sup>,
+                                <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Beichen&#160;Shao</a><sup>1</sup>,
 								<a target="_blank" href="https://yding25.com/">Yan&#160;Ding</a><sup>2</sup>,
-								<a target="_blank">Xingchen&#160;Wang</a><sup>1</sup>,
+								<a target="_blank" style="text-decoration: none; cursor: default; color: black;">Xingchen&#160;Wang</a><sup>1</sup>,
                                 <br>
 
-                                <a target="_blank"> Xuefeng&#160;Xie</a><sup>3</sup>,
-                                <a target="_blank">Fuqiang&#160;Gu</a><sup>1</sup>,
-								<a target="_blank">Jun&#160;Luo</a><sup>4</sup>,
-								<a target="_blank">Chao&#160;Chen</a><sup>4</sup>,
+                                <a target="_blank" style="text-decoration: none; cursor: default; color: black;"> Xuefeng&#160;Xie</a><sup>3</sup>,
+                                <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Fuqiang&#160;Gu</a><sup>1</sup>,
+								<a target="_blank" style="text-decoration: none; cursor: default; color: black;">Jun&#160;Luo</a><sup>4</sup>,
+								<a target="_blank"href="http://www.cs.cqu.edu.cn/info/1274/3804.htm">Chao&#160;Chen</a><sup>4</sup>,
                             </span>
                         </div>
 
@@ -235,7 +233,7 @@
 -->
 
                                 <span class="link-block">
-                                    <a target="_blank" href="https://arxiv.org/abs/2305.17590" class="external-link button is-normal is-rounded is-dark">
+                                    <a target="_blank" href="" class="external-link button is-normal is-rounded is-dark">
                                         <span class="icon">
                                             <i class="ai ai-arxiv"></i>
                                         </span>
