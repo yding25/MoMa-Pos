@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MoMa-Pos: An Efficient Object-Kinematic-Aware Base Placement Optimization Framework for Mobile Manipulation</title>
+
+    <script>
+        var task_map = {
+            "simple-object-manipulation": "simple_object_manipulation",
+            "visual-goal-reaching": "visual_goal_reaching",
+            "novel-concept-grounding": "novel_concept_grounding",
+            "one-shot-video-imitation": "one_shot_video_imitation",
+            "visual-constraint-satisfaction": "visual_constraint_satisfaction",
+            "visual-reasoning": "visual_reasoning"
+        };
+
+        function updateDemoVideo(category) {
+            // var demo = document.getElementById("single-menu-demos").value;
+            var task = document.getElementById(category + "-menu-tasks").value;
+            var inst = document.getElementById(category + "-menu-instances").value;
+
+            console.log(task_map[category], task, inst)
+
+            var video = document.getElementById(category + "-single-task-video");
+            video.src = "assets/videos/demos/" +
+                task_map[category] +
+                "/" +
+                task +
+                "/" +
+                inst +
+                ".mp4";
+            video.playbackRate = 2.0;
+            video.play();
+        }
+
+    </script>
+
+<!--    <script>-->
+<!--    function showVideos() {-->
+<!--        var category = document.getElementById("videoCategory").value;-->
+<!--        var container = document.getElementById("videosContainer");-->
+<!--        container.innerHTML = ''; // Clear existing videos-->
+
+<!--        var videos = {-->
+<!--            dinnerTable: [-->
+<!--                { src: "./static/assets/videos/demos/demo_DinnerTable1.mp4", title: "Dinner Table Video 1" },-->
+<!--                { src: "./static/assets/videos/demos/demo_DinnerTable2.mp4", title: "Dinner Table Video 2" }-->
+<!--            ],-->
+<!--            fridge: [-->
+<!--                { src: "./static/assets/videos/demos/demo_Fridge1.mp4", title: "Fridge Video 1" },-->
+<!--                { src: "./static/assets/videos/demos/demo_Fridge2.mp4", title: "Fridge Video 2" }-->
+<!--            ],-->
+<!--            table: [-->
+<!--                { src: "./static/assets/videos/demos/demo_Table1.mp4", title: "Table Video 1" },-->
+<!--                { src: "./static/assets/videos/demos/demo_Table2.mp4", title: "Table Video 2" }-->
+<!--            ],-->
+<!--            drawer: [-->
+<!--                { src: "./static/assets/videos/demos/demo_Drawer1.mp4", title: "Drawer Video 1" },-->
+<!--                { src: "./static/assets/videos/demos/demo_Drawer2.mp4", title: "Drawer Video 2" }-->
+<!--            ]-->
+<!--        };-->
+
+<!--        videos[category].forEach(function(video) {-->
+<!--            var videoElement = document.createElement('video');-->
+<!--            videoElement.src = video.src;-->
+<!--            videoElement.controls = true;-->
+<!--            videoElement.style.width = '70%';-->
+<!--            videoElement.style.display = 'block'; // 确保视频元素被视为块级元素-->
+<!--            videoElement.style.marginLeft = 'auto'; // 左外边距设置为自动-->
+<!--            videoElement.style.marginRight = 'auto'; // 右外边距设置为自动-->
+<!--            container.appendChild(videoElement);-->
+
+<!--            var titleElement = document.createElement('p');-->
+<!--            titleElement.textContent = video.title;-->
+<!--            titleElement.style.textAlign = 'center';-->
+<!--            container.appendChild(titleElement);-->
+<!--        });-->
+<!--    }-->
+<!--    // Ensure initial videos are shown when the page loads-->
+<!--    window.onload = showVideos;-->
+<!--    </script>-->
+
+    <script>
+        function showVideos() {
+            var category = document.getElementById("videoCategory").value;
+            var container = document.getElementById("videosContainer");
+            container.innerHTML = ''; // Clear existing videos
+
+            var videos = {
+                dinnerTable: [
+                    { src: "./static/assets/videos/demos/demo_DinnerTable1.mp4", title: "Dinner Table Video 1" },
+                    { src: "./static/assets/videos/demos/demo_DinnerTable2.mp4", title: "Dinner Table Video 2" }
+                ],
+                fridge: [
+                    { src: "./static/assets/videos/demos/demo_Fridge1.mp4", title: "Fridge Video 1" },
+                    { src: "./static/assets/videos/demos/demo_Fridge2.mp4", title: "Fridge Video 2" }
+                ],
+                table: [
+                    { src: "./static/assets/videos/demos/demo_Table1.mp4", title: "Table Video 1" },
+                    { src: "./static/assets/videos/demos/demo_Table2.mp4", title: "Table Video 2" }
+                ],
+                drawer: [
+                    { src: "./static/assets/videos/demos/demo_Drawer1.mp4", title: "Drawer Video 1" },
+                    { src: "./static/assets/videos/demos/demo_Drawer2.mp4", title: "Drawer Video 2" }
+                ]
+            };
+
+            videos[category].forEach(function(video) {
+                var videoElement = document.createElement('video');
+                videoElement.src = video.src;
+                videoElement.controls = true;
+                videoElement.style.width = '70%';
+                videoElement.style.display = 'block';
+                videoElement.style.margin = 'auto'; // 同时设置左右外边距为自动
+                container.appendChild(videoElement);
+
+                var titleElement = document.createElement('p');
+                titleElement.textContent = video.title;
+                titleElement.style.textAlign = 'center';
+                container.appendChild(titleElement);
+            });
+        }
+
+        // 确保在页面加载时根据<select>的默认值显示视频
+        window.onload = function() {
+            // 如果需要，这里可以设置<select>的默认值
+            // document.getElementById("videoCategory").value = "dinnerTable";
+            showVideos();
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="./static/css/academicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $(".tabs ul li a").click(function(e) {
+                e.preventDefault();
+
+                // Get the target tab
+                var targetTab = $(this).attr("href");
+
+                // Remove 'is-active' class from all tab-items
+                $(".tabs ul li").removeClass("is-active");
+
+                // Add 'is-active' class to current tab-item
+                $(this).parent().addClass("is-active");
+
+                // Hide all tab content
+                $(".tab-content .tab-pane").removeClass("active");
+
+                // Show the target tab content
+                $(targetTab).addClass("active");
+            });
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title" style="font-size: 44px;">MoMa-Pos: An Efficient Object-Kinematic-Aware Base Placement Optimization Framework for Mobile Manipulation</h1>
+                        <h4 class="title is-4 conference-authors"><a target="_blank" href="https://ieee-iros.org/"> Submitted to ICRA 2025</a>
+                        </h4>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Beichen&#160;Shao</a><sup>1</sup>,
+								<a target="_blank" href="https://yding25.com/">Yan&#160;Ding</a><sup>2</sup>,
+								<a target="_blank" style="text-decoration: none; cursor: default; color: black;">Xingchen&#160;Wang</a><sup>1</sup>,
+                                <br>
+
+                                <a target="_blank" style="text-decoration: none; cursor: default; color: black;"> Xuefeng&#160;Xie</a><sup>3</sup>,
+                                <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Fuqiang&#160;Gu</a><sup>1</sup>,
+								<a target="_blank" style="text-decoration: none; cursor: default; color: black;">Jun&#160;Luo</a><sup>4</sup>,
+								<a target="_blank"href="http://www.cs.cqu.edu.cn/info/1274/3804.htm">Chao&#160;Chen</a><sup>4</sup>,
+                            </span>
+                        </div>
+
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block"><sup>1</sup>College of Computer Science, Chongqing University</span>
+                            <span class="author-block"><sup>2</sup>Binghamton University</span>
+                            <span class="author-block"><sup>3</sup>School of Management Science and Real Estate, Chongqing University</span>
+                            <span class="author-block"><sup>4</sup>State Key Laboratory of Mechanical Transmission for Advanced Equipment, Chongqing University</span>
+
+                        </div>
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <!-- TODO PDF Link. -->
+<!--
+                                <span class="link-block">
+                                   <a target="_blank" href="https://www.youtube.com/watch?v=pHSxx9AqwC4" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fas fa-video"></i>
+                                        </span>
+                                        <span>Video</span>
+                                    </a>
+                                </span>
+-->
+
+                                <span class="link-block">
+                                    <a target="_blank" href="https://arxiv.org/abs/2403.19940" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="ai ai-arxiv"></i>
+                                        </span>
+                                        <span>ArXiv</span>
+                                    </a>
+                                </span>
+
+                                <!-- Code Link. -->
+                                <span class="link-block">
+                                    <a target="_blank" href="https://github.com/AutonoBot-Lab/Project_MoMa-Pos" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fab fa-github"></i>
+                                        </span>
+                                        <span>Code</span>
+                                    </a>
+
+<!--                                    <a target="_blank" href="./assets/datasets/COWP_dataset_12tasks_Final.xlsx" class="external-link button is-normal is-rounded is-dark">-->
+<!--                                        <span class="icon">-->
+<!--                                            <i class="fas fa-database"></i>-->
+<!--                                        </span>-->
+<!--                                        <span>Dataset</span>-->
+<!--                                    </a>-->
+<!--                                    <a target="_blank" href="./assets/datasets/COWP_questionnaire.pdf" class="external-link button is-normal is-rounded is-dark">-->
+<!--                                        <span class="icon">-->
+<!--                                            <i class="fas fa-file-pdf"></i>-->
+<!--                                        </span>-->
+<!--                                        <span>Questionnaire</span>-->
+<!--                                    </a>-->
+<!--                                    <a target="_blank" href="./assets/datasets/human_study_instruction.pdf" class="external-link button is-normal is-rounded is-dark">-->
+<!--                                        <span class="icon">-->
+<!--                                            <i class="fas fa-file-pdf"></i>-->
+<!--                                        </span>-->
+<!--                                        <span>Instruction</span>-->
+<!--                                    </a>-->
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero is-light is-small">
+        <div class="hero-body">
+            <div class="container">
+                <div class="item item-sweep_without_exceeding" style="display: flex; justify-content: center; align-items: center;">
+                    <video poster="" id="sweep_without_exceeding" autoplay controls muted loop style="width:70%;" playbackRate=2.0>
+                        <source src="./static/assets/videos/demos/demo1.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <!-- Abstract. -->
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <h2 class="title is-3">Abstract</h2>
+                    <div class="content has-text-justified">
+                        <p style="font-size: 110%">
+                            Mobile manipulators always need to determine
+							feasible base positions prior to carrying out navigation-manipulation tasks. Real-world environments are often clut
+							tered with various furniture, obstacles, and dozens of other
+							objects. Efficiently computing base positions poses a challenge.
+							In this work, we introduce a framework named MoMa-Pos to
+							address this issue. MoMa-Pos first learns to predict a small set
+							of objects that, taken together, would be sufficient for finding
+							base positions using a graph embedding architecture
+
+                            <br>
+                            <br>
+
+                            MoMa-Pos then calculates standing positions by considering furniture
+							structures, robot models, and obstacles comprehensively. We
+							have extensively evaluated the proposed MoMa-Pos across
+							different settings (e.g., environment and algorithm parameters)
+							and with various mobile manipulators. Our empirical results
+							show that MoMa-Pos demonstrates remarkable effectiveness
+							and efficiency in its performance, surpassing the methods in
+							the literature.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <h2 class="title is-3">Framework of MoMa-Pos</h2>
+                    <img src="./static/assets/images/MoMa-Pos Framework3.png" alt="Your image description" style="display: block; margin-left: auto; margin-right: auto; width: 80%;">
+                    <br>
+                    <div class="content has-text-justified">
+                        <span style="font-size: 110%">
+                            The MoMa-Pos framework provides an overview that includes three key components: Predicting Object Importance for Modeling, Computing Potential Base Position Area, and Identifying a Feasible Base Position
+                        </span>
+                        <br>
+
+                        <span style="font-size: 110%">
+                            <sup>&#8270;</sup> The red area represents the planning of the robot's path using candidate grasp points.
+                        </span>
+                        <br>
+                        <span style="font-size: 110%">
+                            <sup>&#8270;</sup> The green area The green area represents the identification of a feasible base position.
+                        </span>
+                        <br>
+                        <span style="font-size: 110%">
+                            <sup>&#8270;</sup> The yellow area represents the simplification of the environment.
+                        </span>
+                        <br>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <hr>
+
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered">
+                <div class="column is-full">
+                    <h2 class="title is-3 has-text-centered"><span class="dvima">Experiments</span></h2>
+                    <img src="./static/assets/images/Experiment_Table.png" alt="Your image description" style="display: block; margin-left: auto; margin-right: auto; width: 90%;">
+                    <br>
+                    <span style="font-size: 110%">
+                        In our experiments, we compared the performance of MoMa-Pos (our method) with three baseline methods across six different specific scenarios, recording the time required to complete tasks and the specific distance traveled. In each specific scenario, results were tested at different positions. Ultimately, the method that required the least amount of time and traveled the shortest distance to complete tasks performed the best.
+                    </span>
+                </div>
+            </div>
+    </section>
+    <hr>
+    <!-- Video Demos Section -->
+<!--    <section class="section">-->
+<!--        <div class="container is-max-widescreen">-->
+<!--            <div class="columns is-centered">-->
+<!--                <div class="column is-full">-->
+<!--                    <h2 class="title is-3 has-text-centered">Video Demos</h2>-->
+<!--                    <select id="videoCategory" onchange="showVideos()">-->
+<!--                        <option value="dinnerTable">Dinner Table</option>-->
+<!--                        <option value="fridge">Fridge</option>-->
+<!--                        <option value="table">Table</option>-->
+<!--                        <option value="drawer">Drawer</option>-->
+<!--                    </select>-->
+<!--                    <div id="videosContainer"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered">
+                <div class="column is-full">
+                    <h2 class="title is-3 has-text-centered">Video Demos</h2>
+                    <div class="has-text-centered" style="margin-bottom: 20px;">
+                        <span>You can view the MoMa-Pos performance under </span>
+                        <select id="videoCategory" onchange="showVideos()">
+                            <option value="dinnerTable">Dinner Table</option>
+                            <option value="fridge">Fridge</option>
+                            <option value="table">Table</option>
+                            <option value="drawer">Drawer</option>
+                        </select>
+                        <span> scenarios.</span>
+                    </div>
+                    <div id="videosContainer"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
+    <section class="section">
+        <div class="container is-max-widescreen">
+            <div class="rows">
+                <div class="rows is-centered ">
+                    <div class="row is-full-width">
+                        <h2 class="title is-3 has-text-centered"><span class="dvima">Conclusion and Limitations</span></h2>
+                        <p style="font-size: 110%">
+                            In this work, we demonstrated that MoMa-Pos effectively identifies feasible positions for navigation-manipulation tasks. We conclude by acknowledging the limitations of our study, reflecting on the implications of our findings, and highlighting opportunities for future research. A significant limitation we encountered is the lack of discussion on the performance of MoMa-Pos with inaccurate simulation models. In the real world, encountering inaccurate models is common, despite the remarkable advancements in computer vision and 3D modeling technologies. We have not explored whether MoMa-Pos’s performance, particularly in terms of task execution time, would deteriorate under such conditions. Theoretically, MoMa-Pos should still be able to find feasible positions, as we have demonstrated its completeness. Another constraint of the current framework is the inability of certain critical parameters, such as α, to adapt automatically. Moving forward, we aim to address these limitations to enhance MoMa-Pos’s performance further.
+                        <br>
+                        <br>
+
+                            We have shown that MoMa-Pos effectively identifies viable positions for navigation-manipulation tasks. Acknowledging the limitations of our research, we reflect on our findings' implications and highlight future research opportunities. One notable limitation is the absence of analysis on MoMa-Pos's performance with imprecise simulation models, a common issue despite advances in computer vision and 3D modeling. We have yet to investigate if MoMa-Pos's task execution time is adversely affected under such conditions. However, our results suggest MoMa-Pos can reliably identify feasible positions. Another limitation is the framework's inability to automatically adjust critical parameters, like α. Future efforts will focus on overcoming these challenges to improve MoMa-Pos's efficacy.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+    <section class="section" id="BibTeX">
+        <div class="container is-max-widescreen content">
+            <h2 class="title">BibTeX</h2>
+            <pre><code>@article{shao2024integrating,
+  title={MoMa-Pos: Where Should Mobile Manipulators Stand in Cluttered Environment Before Task Execution?},
+  author={Shao, Beichen and Ding, Yan and Wang, Xingchen and Xie, Xuefeng and Gu, Fuqiang and Luo, Jun and Chen, Chao},
+  journal={arXiv preprint arXiv:2403.19940},
+  year={2024}
+}</code></pre>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column">
+                    <div class="content has-text-centered">
+                        <p>
+                            Website template borrowed from <a herf="https://vimalabs.github.io/"> VIMA, <a href="https://github.com/nerfies/nerfies.github.io">NeRFies</a> and <a href="https://github.com/cliport/cliport.github.io">CLIPort</a>.
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
