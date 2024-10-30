@@ -428,12 +428,16 @@
                     <div class="row is-full-width">
                         <h2 class="title is-3 has-text-centered"><span class="dvima">Conclusion and Limitations</span></h2>
                         <p style="font-size: 110%">
-                            In this work, we demonstrated that MoMa-Pos effectively identifies feasible positions for navigation-manipulation tasks. We conclude by acknowledging the limitations of our study, reflecting on the implications of our findings, and highlighting opportunities for future research. A significant limitation we encountered is the lack of discussion on the performance of MoMa-Pos with inaccurate simulation models. In the real world, encountering inaccurate models is common, despite the remarkable advancements in computer vision and 3D modeling technologies. We have not explored whether MoMa-Pos’s performance, particularly in terms of task execution time, would deteriorate under such conditions. Theoretically, MoMa-Pos should still be able to find feasible positions, as we have demonstrated its completeness. Another constraint of the current framework is the inability of certain critical parameters, such as α, to adapt automatically. Moving forward, we aim to address these limitations to enhance MoMa-Pos’s performance further.
+                            In this work, we introduce MoMa-Pos, a novel framework
+designed to optimize base placement for mobile manipulators, particularly in environments containing both rigid and
+articulated objects. MoMa-Pos addresses key challenges in
+navigation-manipulation tasks by selectively modeling taskrelevant objects, leveraging a graph-based neural network
+to enhance computational efficiency. By integrating inverse
+reachability maps and environmental kinematic properties,
+the framework enables precise base placement tailored to
+specific robot models, ensuring adaptability and physical
+feasibility across diverse environments.
                         <br>
-                        <br>
-
-                            We have shown that MoMa-Pos effectively identifies viable positions for navigation-manipulation tasks. Acknowledging the limitations of our research, we reflect on our findings' implications and highlight future research opportunities. One notable limitation is the absence of analysis on MoMa-Pos's performance with imprecise simulation models, a common issue despite advances in computer vision and 3D modeling. We have yet to investigate if MoMa-Pos's task execution time is adversely affected under such conditions. However, our results suggest MoMa-Pos can reliably identify feasible positions. Another limitation is the framework's inability to automatically adjust critical parameters, like α. Future efforts will focus on overcoming these challenges to improve MoMa-Pos's efficacy.
-                        </p>
                     </div>
                 </div>
             </div>
