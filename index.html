@@ -298,26 +298,30 @@
                     <h2 class="title is-3">Abstract</h2>
                     <div class="content has-text-justified">
                         <p style="font-size: 110%">
-                            Mobile manipulators always need to determine
-							feasible base positions prior to carrying out navigation-manipulation tasks. Real-world environments are often clut
-							tered with various furniture, obstacles, and dozens of other
-							objects. Efficiently computing base positions poses a challenge.
-							In this work, we introduce a framework named MoMa-Pos to
-							address this issue. MoMa-Pos first learns to predict a small set
-							of objects that, taken together, would be sufficient for finding
-							base positions using a graph embedding architecture
+                            In this work, we present MoMa-Pos, a frame
+					work that optimizes base placement for mobile manipulators,
+					 focusing on navigation-manipulation tasks in environments
+					 with both rigid and articulated objects. Base placement is
+					 particularly critical in such environments, where improper
+					 positioning can severely hinder task execution if the object’s
+					 kinematics are not adequately accounted for. MoMa-Pos se
+					lectively reconstructs the environment by prioritizing task
+					relevant key objects, enhancing computational efficiency and
+					 ensuring that only essential kinematic details are processed.
+					 The framework leverages a graph-based neural network to
+					 predict object importance, allowing for focused modeling while
+					 minimizing unnecessary computations. 
 
                             <br>
                             <br>
 
-                            MoMa-Pos then calculates standing positions by considering furniture
-							structures, robot models, and obstacles comprehensively. We
-							have extensively evaluated the proposed MoMa-Pos across
-							different settings (e.g., environment and algorithm parameters)
-							and with various mobile manipulators. Our empirical results
-							show that MoMa-Pos demonstrates remarkable effectiveness
-							and efficiency in its performance, surpassing the methods in
-							the literature.
+                            Additionally, MoMa
+					Pos integrates inverse reachability maps with environmental
+					 kinematic properties to identify feasible base positions tailored
+					 to the specific robot model. Extensive evaluations demonstrate
+					 that MoMa-Pos outperforms existing methods in both real and
+					 simulated environments, offering improved efficiency, precision,
+					 and adaptability across diverse settings and robot models
                         </p>
                     </div>
                 </div>
