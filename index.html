@@ -321,7 +321,7 @@
 					 to the specific robot model. Extensive evaluations demonstrate
 					 that MoMa-Pos outperforms existing methods in both real and
 					 simulated environments, offering improved efficiency, precision,
-					 and adaptability across diverse settings and robot models
+					 and adaptability across diverse settings and robot models.
                         </p>
                     </div>
                 </div>
@@ -339,23 +339,27 @@
                     <br>
                     <div class="content has-text-justified">
                         <span style="font-size: 110%">
-                            The MoMa-Pos framework provides an overview that includes three key components: Predicting Object Importance for Modeling, Computing Potential Base Position Area, and Identifying a Feasible Base Position
+                            MoMa-Pos consists of four phases, including object importance prediction for kinematic modeling，kinematic modeling of key objects, base placement optimization, and navigation to feasible base placement.
                         </span>
                         <br>
 
                         <span style="font-size: 110%">
-                            <sup>&#8270;</sup> The red area represents the planning of the robot's path using candidate grasp points.
+                            <sup>&#8270;</sup> In the first phase, key objects in the scene are prioritized to enable efficient kinematic modeling without processing every object.
                         </span>
                         <br>
                         <span style="font-size: 110%">
-                            <sup>&#8270;</sup> The green area The green area represents the identification of a feasible base position.
+                            <sup>&#8270;</sup> In the second phase,  kinematic modeling is conducted for these prioritized objects, supporting the subsequent object-kinematic-aware base placement optimization.
                         </span>
                         <br>
                         <span style="font-size: 110%">
-                            <sup>&#8270;</sup> The yellow area represents the simplification of the environment.
+                            <sup>&#8270;</sup> In the third phase,  potential base placement areas are identified by considering both robot-specific constraints and environmental kinematics.
                         </span>
                         <br>
-
+			<br>
+                        <span style="font-size: 110%">
+                            <sup>&#8270;</sup> In the last phase,  the robot navigates to the optimal position, ensuring physical feasibility and adaptability for task execution
+                        </span>
+                        <br>
                     </div>
                 </div>
             </div>
