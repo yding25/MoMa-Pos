@@ -4,141 +4,40 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MoMa-Pos: An Efficient Object-Kinematic-Aware Base Placement Optimization Framework for Mobile Manipulation</title>
-
-    <script>
-        var task_map = {
-            "simple-object-manipulation": "simple_object_manipulation",
-            "visual-goal-reaching": "visual_goal_reaching",
-            "novel-concept-grounding": "novel_concept_grounding",
-            "one-shot-video-imitation": "one_shot_video_imitation",
-            "visual-constraint-satisfaction": "visual_constraint_satisfaction",
-            "visual-reasoning": "visual_reasoning"
-        };
-
-        function updateDemoVideo(category) {
-            // var demo = document.getElementById("single-menu-demos").value;
-            var task = document.getElementById(category + "-menu-tasks").value;
-            var inst = document.getElementById(category + "-menu-instances").value;
-
-            console.log(task_map[category], task, inst)
-
-            var video = document.getElementById(category + "-single-task-video");
-            video.src = "assets/videos/demos/" +
-                task_map[category] +
-                "/" +
-                task +
-                "/" +
-                inst +
-                ".mp4";
-            video.playbackRate = 2.0;
-            video.play();
+    <title>MoMa-Pos: An Efficient Object-Kinematic-Aware Base Placement Determination Framework for Mobile Manipulation</title>
+    <style>
+        /* 使用 Flex 布局，将每行显示两个视频 */
+        .video-row {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
         }
-
-    </script>
-
-<!--    <script>-->
-<!--    function showVideos() {-->
-<!--        var category = document.getElementById("videoCategory").value;-->
-<!--        var container = document.getElementById("videosContainer");-->
-<!--        container.innerHTML = ''; // Clear existing videos-->
-
-<!--        var videos = {-->
-<!--            dinnerTable: [-->
-<!--                { src: "./static/assets/videos/demos/demo_DinnerTable1.mp4", title: "Dinner Table Video 1" },-->
-<!--                { src: "./static/assets/videos/demos/demo_DinnerTable2.mp4", title: "Dinner Table Video 2" }-->
-<!--            ],-->
-<!--            fridge: [-->
-<!--                { src: "./static/assets/videos/demos/demo_Fridge1.mp4", title: "Fridge Video 1" },-->
-<!--                { src: "./static/assets/videos/demos/demo_Fridge2.mp4", title: "Fridge Video 2" }-->
-<!--            ],-->
-<!--            table: [-->
-<!--                { src: "./static/assets/videos/demos/demo_Table1.mp4", title: "Table Video 1" },-->
-<!--                { src: "./static/assets/videos/demos/demo_Table2.mp4", title: "Table Video 2" }-->
-<!--            ],-->
-<!--            drawer: [-->
-<!--                { src: "./static/assets/videos/demos/demo_Drawer1.mp4", title: "Drawer Video 1" },-->
-<!--                { src: "./static/assets/videos/demos/demo_Drawer2.mp4", title: "Drawer Video 2" }-->
-<!--            ]-->
-<!--        };-->
-
-<!--        videos[category].forEach(function(video) {-->
-<!--            var videoElement = document.createElement('video');-->
-<!--            videoElement.src = video.src;-->
-<!--            videoElement.controls = true;-->
-<!--            videoElement.style.width = '70%';-->
-<!--            videoElement.style.display = 'block'; // 确保视频元素被视为块级元素-->
-<!--            videoElement.style.marginLeft = 'auto'; // 左外边距设置为自动-->
-<!--            videoElement.style.marginRight = 'auto'; // 右外边距设置为自动-->
-<!--            container.appendChild(videoElement);-->
-
-<!--            var titleElement = document.createElement('p');-->
-<!--            titleElement.textContent = video.title;-->
-<!--            titleElement.style.textAlign = 'center';-->
-<!--            container.appendChild(titleElement);-->
-<!--        });-->
-<!--    }-->
-<!--    // Ensure initial videos are shown when the page loads-->
-<!--    window.onload = showVideos;-->
-<!--    </script>-->
-
-    <script>
-        function showVideos() {
-            var category = document.getElementById("videoCategory").value;
-            var container = document.getElementById("videosContainer");
-            container.innerHTML = ''; // Clear existing videos
-
-            var videos = {
-		open_fridge: [
-                    { src: "./static/assets/videos/demos/open_fridge.mp4", title: "Task:Open the fridge" }
-                ],
-		open_drawer: [
-                    { src: "./static/assets/videos/demos/open_drawer.mp4", title: "Task:Open the drawer" }
-                ],
-		open_microwave: [
-                    { src: "./static/assets/videos/demos/open_microwave.mp4", title: "Task:Open the microwave" }
-                ],
-                bowl_on_dinnerTable: [
-                    { src: "./static/assets/videos/demos/demo_DinnerTable1.mp4", title: "Task:Grasp object on Dinner Table" },
-                    { src: "./static/assets/videos/demos/demo_DinnerTable2.mp4", title: "Task:Grasp object on Dinner Table" }
-                ],
-                bowl_in_fridge: [
-                    { src: "./static/assets/videos/demos/demo_Fridge1.mp4", title: "Task:Grasp object in Fridge" },
-                    { src: "./static/assets/videos/demos/demo_Fridge2.mp4", title: "Task:Grasp object in Fridge" }
-                ],
-                bowl_on_table: [
-                    { src: "./static/assets/videos/demos/demo_Table1.mp4", title: "Task:Grasp object on Table" },
-                    { src: "./static/assets/videos/demos/demo_Table2.mp4", title: "Task:Grasp object on Table" }
-                ],
-                bowl_in_drawer: [
-                    { src: "./static/assets/videos/demos/demo_Drawer1.mp4", title: "Task:Grasp object in drawer" },
-                    { src: "./static/assets/videos/demos/demo_Drawer2.mp4", title: "Task:Grasp object in drawer" }
-                ]
-            };
-
-            videos[category].forEach(function(video) {
-                var videoElement = document.createElement('video');
-                videoElement.src = video.src;
-                videoElement.controls = true;
-                videoElement.style.width = '70%';
-                videoElement.style.display = 'block';
-                videoElement.style.margin = 'auto'; // 同时设置左右外边距为自动
-                container.appendChild(videoElement);
-
-                var titleElement = document.createElement('p');
-                titleElement.textContent = video.title;
-                titleElement.style.textAlign = 'center';
-                container.appendChild(titleElement);
-            });
+        .video-item {
+          width: 45%;         /* 设置容器宽度为45%，两项一行 */
+          margin: 10px;       /* 设置间距 */
+          text-align: center; /* 居中文本 */
         }
-
-        // 确保在页面加载时根据<select>的默认值显示视频
-        window.onload = function() {
-            // 如果需要，这里可以设置<select>的默认值
-            // document.getElementById("videoCategory").value = "dinnerTable";
-            showVideos();
-        };
-    </script>
+        .video-item video {
+          width: 100%;        /* 视频宽度占满容器 */
+        }
+      </style>
+    <title>Real-World Demos</title>
+    <!-- <style>
+      /* 通用视频展示的 Flex 布局 */
+      .video-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .video-item {
+        width: 30%;         /* 每个视频容器宽度设为30%，一行大致能放三个 */
+        margin: 10px;       /* 设置间距 */
+        text-align: center; /* 居中文本 */
+      }
+      .video-item video {
+        width: 100%;        /* 视频宽度占满容器 */
+      }
+    </style> -->
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
     <link rel="stylesheet" href="./static/css/bulma.min.css">
     <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
@@ -202,28 +101,33 @@
             <div class="container is-max-desktop">
                 <div class="columns is-centered">
                     <div class="column has-text-centered">
-                        <h1 class="title is-1 publication-title" style="font-size: 36px;">MoMa-Pos: An Efficient Object-Kinematic-Aware Base Placement Optimization Framework for Mobile Manipulation--Appendix Page</h1>
-                        <h4 class="title is-4 conference-authors"><a target="_blank" href="https://ieee-iros.org/"> Submitted to ICRA 2025</a>
+                        <h1 class="title is-1 publication-title" style="font-size: 36px;">MoMa-Pos: An Efficient Object-Kinematic-Aware Base Placement
+                            Determination Framework for Mobile Manipulation--Appendix Page</h1>
+                        <h4 class="title is-4 conference-authors"><a target="_blank" href="https://ieee-iros.org/"> Submitted to IROS 2025</a>
                         </h4>
                         <div class="is-size-5 publication-authors">
                             <span class="author-block">
                                 <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Beichen&#160;Shao</a><sup>1</sup>,
 								<a target="_blank" href="https://scholar.google.com/citations?user=5GVcOTEAAAAJ&hl=en&oi=ao">Nieqing&#160;Cao</a><sup>2</sup>,
-				    				<a target="_blank" href="https://yding25.com/">Yan&#160;Ding</a><sup>3</sup>,
-								
-                                <br>
-
+				    			<a target="_blank" href="https://yding25.com/">Yan&#160;Ding</a><sup>3</sup>,
                                 <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Xingchen&#160;Wang</a><sup>1</sup>,
-                                <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Fuqiang&#160;Gu</a><sup>1</sup>,
-								
-				<a target="_blank"href="http://www.cs.cqu.edu.cn/info/1274/3804.htm">Chao&#160;Chen</a><sup>1</sup>,
+								<a target="_blank" style="text-decoration: none; cursor: default; color: black;">Fuqiang&#160;Gu</a><sup>1</sup>,
+                                <br>
+                                <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Jie&#160;Ma</a><sup>4</sup>,
+                                <a target="_blank" href="https://faculty.cqu.edu.cn/WangGang/zh_CN/index.htm">Gang&#160;Wang</a><sup>4</sup>,
+                                <a target="_blank" href="https://faculty.cqu.edu.cn/JunLuo">Jun&#160;Luo</a><sup>4</sup>,								
+				                <a target="_blank"href="http://www.cs.cqu.edu.cn/info/1274/3804.htm">Chao&#160;Chen</a><sup>4</sup>,
                             </span>
                         </div>
 
                         <div class="is-size-5 publication-authors">
                             <span class="author-block"><sup>1</sup>College of Computer Science, Chongqing University</span>
+                            <br>
                             <span class="author-block"><sup>2</sup>Xi’an Jiaotong Liverpool University</span>
+                            <br>
                             <span class="author-block"><sup>3</sup> Shanghai Artificial Intelligence Laboratory</span>
+                            <span class="author-block"><sup>4</sup> State Key Laboratory of Mechanical Transmission for Advanced Equipment, Chongqing University.</span>
+        
                         </div>
 
                         <div class="column has-text-centered">
@@ -298,32 +202,97 @@
         </div>
     </section>
 
-    <hr>
     <section class="section">
         <div class="container is-max-widescreen">
-            <div class="columns is-centered">
-                <div class="column is-full">
-                    <h2 class="title is-3 has-text-centered">Additional simulation</h2>
-                    <div class="has-text-centered" style="margin-bottom: 20px;">
-                        <span>You can view the MoMa-Pos performance under </span>
-                        <select id="videoCategory" onchange="showVideos()">
-			    <option value="open_fridge">open_fridge</option>
-			    <option value="open_drawer">open_drawer</option>
-			    <option value="open_microwave">open_microwave</option>
-                            <option value="bowl_on_dinnerTable">bowl_on_dinnerTable</option>
-                            <option value="bowl_in_fridge">bowl_in_fridge</option>
-                            <option value="bowl_on_table">bowl_on_table</option>
-                            <option value="bowl_in_drawer">bowl_in_drawer</option>
-                        </select>
-                        <span> scenarios.</span>
-                    </div>
-                    <div id="videosContainer"></div>
-                </div>
+          <div class="columns is-centered">
+            <div class="column is-full">
+              <h2 class="title is-3 has-text-centered">Additional Simulation Demos</h2>
+              <!-- 所有视频将直接展示在这里 -->
+              <div id="videosContainer" class="video-row"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <script>
+        // 定义视频数据：多个分类，每个分类包含一个或多个视频
+        var videos = {
+          open_fridge: [
+            { src: "./static/assets/videos/demos/open_fridge.mp4", title: "Task 1: Open the fridge" }
+          ],
+          open_drawer: [
+            { src: "./static/assets/videos/demos/open_drawer.mp4", title: "Task 2: Open the drawer" }
+          ],
+          open_microwave: [
+            { src: "./static/assets/videos/demos/open_microwave.mp4", title: "Task 3: Open the microwave" }
+          ],
+          bowl_on_dinnerTable: [
+            { src: "./static/assets/videos/demos/demo_DinnerTable1.mp4", title: "Task 4: Grasp object on Dinner Table" },
+            { src: "./static/assets/videos/demos/demo_DinnerTable2.mp4", title: "Task 5: Grasp object on Dinner Table(different position)" }
+          ],
+          bowl_in_fridge: [
+            { src: "./static/assets/videos/demos/demo_Fridge1.mp4", title: "Task 6: Grasp object in Fridge" },
+            { src: "./static/assets/videos/demos/demo_Fridge2.mp4", title: "Task 7: Grasp object in Fridge(different position)" }
+          ],
+          bowl_on_table: [
+            { src: "./static/assets/videos/demos/demo_Table1.mp4", title: "Task 8: Grasp object on Table" },
+            { src: "./static/assets/videos/demos/demo_Table2.mp4", title: "Task 9: Grasp object on Table(different position)" }
+          ],
+          bowl_in_drawer: [
+            { src: "./static/assets/videos/demos/demo_Drawer1.mp4", title: "Task 10: Grasp object in drawer" },
+            { src: "./static/assets/videos/demos/demo_Drawer2.mp4", title: "Task 11: Grasp object in drawer(different position)" }
+          ]
+        };
+    
+        // 获取视频展示容器
+        var container = document.getElementById("videosContainer");
+        
+        // 遍历所有分类，将每个视频都添加到页面中
+        Object.keys(videos).forEach(function(category) {
+          videos[category].forEach(function(video) {
+            // 创建一个视频项容器
+            var videoItem = document.createElement('div');
+            videoItem.className = 'video-item';
+            
+            // 创建视频标签
+            var videoElement = document.createElement('video');
+            videoElement.src = video.src;
+            videoElement.controls = true;
+            videoItem.appendChild(videoElement);
+            
+            // 创建标题标签
+            var titleElement = document.createElement('p');
+            titleElement.textContent = video.title;
+            videoItem.appendChild(titleElement);
+            
+            // 将视频项添加到容器中
+            container.appendChild(videoItem);
+          });
+        });
+      </script>
+
+    <section class="section">
+        <div class="container is-max-widescreen">
+        <h2 class="title is-3 has-text-centered">Real-World Demos</h2>
+        <div class="video-row">
+            <div class="video-item">
+            <video src="./static/assets/videos/demos/demo_apple.mp4" controls></video>
+            <p>Task 1: Grasp apple</p>
+            </div>
+            <div class="video-item">
+            <video src="./static/assets/videos/demos/demo_cup.mp4" controls></video>
+            <p>Task 2: Grasp cup</p>
+            </div>
+            <div class="video-item">
+            <video src="./static/assets/videos/demos/demo_open_mov.mp4" controls></video>
+            <p>Task 3: Open the microwave</p>
+            </div>
+            <div class="video-item">
+                <video src="./static/assets/videos/demos/demo_open_fridge.mp4" controls></video>
+            <p>Task 4: Open the fridge</p>
             </div>
         </div>
+        </div>
     </section>
-
-
     <hr>
     <section class="section" id="BibTeX">
         <div class="container is-max-widescreen content">

@@ -200,21 +200,24 @@
                             <span class="author-block">
                                 <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Beichen&#160;Shao</a><sup>1</sup>,
 								<a target="_blank" href="https://scholar.google.com/citations?user=5GVcOTEAAAAJ&hl=en&oi=ao">Nieqing&#160;Cao</a><sup>2</sup>,
-				    				<a target="_blank" href="https://yding25.com/">Yan&#160;Ding</a><sup>3</sup>,
-								
-                                <br>
-
+				    			<a target="_blank" href="https://yding25.com/">Yan&#160;Ding</a><sup>3</sup>,
                                 <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Xingchen&#160;Wang</a><sup>1</sup>,
-                                <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Fuqiang&#160;Gu</a><sup>1</sup>,
-								
-				<a target="_blank"href="http://www.cs.cqu.edu.cn/info/1274/3804.htm">Chao&#160;Chen</a><sup>1</sup>,
+								<a target="_blank" style="text-decoration: none; cursor: default; color: black;">Fuqiang&#160;Gu</a><sup>1</sup>,
+                                <br>
+                                <a target="_blank" style="text-decoration: none; cursor: default; color: black;">Jie&#160;Ma</a><sup>4</sup>,
+                                <a target="_blank" href="https://faculty.cqu.edu.cn/WangGang/zh_CN/index.htm">Gang&#160;Wang</a><sup>4</sup>,
+                                <a target="_blank" href="https://faculty.cqu.edu.cn/JunLuo">Jun&#160;Luo</a><sup>4</sup>,								
+				                <a target="_blank"href="http://www.cs.cqu.edu.cn/info/1274/3804.htm">Chao&#160;Chen</a><sup>4</sup>,
                             </span>
                         </div>
 
                         <div class="is-size-5 publication-authors">
                             <span class="author-block"><sup>1</sup>College of Computer Science, Chongqing University</span>
+                            <br>
                             <span class="author-block"><sup>2</sup>Xi’an Jiaotong Liverpool University</span>
+                            <br>
                             <span class="author-block"><sup>3</sup> Shanghai Artificial Intelligence Laboratory</span>
+                            <span class="author-block"><sup>4</sup> State Key Laboratory of Mechanical Transmission for Advanced Equipment, Chongqing University.</span>
                         </div>
 
                         <div class="column has-text-centered">
@@ -298,31 +301,22 @@
                     <h2 class="title is-3">Abstract</h2>
                     <div class="content has-text-justified">
                         <p style="font-size: 110%">
-                            In this work, we present MoMa-Pos, a frame
-					work that optimizes base placement for mobile manipulators,
-					 focusing on navigation-manipulation tasks in environments
-					 with both rigid and articulated objects. Base placement is
-					 particularly critical in such environments, where improper
-					 positioning can severely hinder task execution if the object’s
-					 kinematics are not adequately accounted for. MoMa-Pos se
-					lectively reconstructs the environment by prioritizing task
-					relevant key objects, enhancing computational efficiency and
-					 ensuring that only essential kinematic details are processed.
-					 The framework leverages a graph-based neural network to
-					 predict object importance, allowing for focused modeling while
-					 minimizing unnecessary computations. 
+                            Base placement is particularly critical for
+navigation-manipulation tasks in environments, where improper placement can severely hinder task execution if the
+objects kinematics are not properly taken into account. In this
+work, we present MoMa-Pos, a framework that determines the
+base placement for mobile manipulators in such environments.
+MoMa-Pos leverages a graph-based neural network to predict
+object importance and selectively reconstructs the environment
+by prioritizing task-relevant key objects, enhancing computational efficiency and ensuring that only essential kinematic
+details are processed. Moreover, MoMa-Pos integrates inverse
+reachability maps with environmental kinematic properties to
+determine feasible base placement tailored to the specific robot
+model. Extensive evaluations demonstrate that MoMa-Pos outperforms existing methods in both real and simulated environments, offering improved efficiency, precision, and adaptability
+across diverse settings and robot models 
 
-                            <br>
-                            <br>
-
-                            Additionally, MoMa
-					Pos integrates inverse reachability maps with environmental
-					 kinematic properties to identify feasible base positions tailored
-					 to the specific robot model. Extensive evaluations demonstrate
-					 that MoMa-Pos outperforms existing methods in both real and
-					 simulated environments, offering improved efficiency, precision,
-					 and adaptability across diverse settings and robot models.
-                        </p>
+                            
+                            
                     </div>
                 </div>
             </div>
